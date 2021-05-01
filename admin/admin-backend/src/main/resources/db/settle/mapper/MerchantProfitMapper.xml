@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.settle.mapper.MerchantProfitMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.settle.model.MerchantProfit">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="trans_id" jdbcType="VARCHAR" property="transId"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="account_date" jdbcType="INTEGER" property="accountDate"/>
+        <result column="trans_type" jdbcType="BIGINT" property="transType"/>
+        <result column="total_count" jdbcType="BIGINT" property="totalCount"/>
+        <result column="total_amount" jdbcType="BIGINT" property="totalAmount"/>
+        <result column="total_fee_amount" jdbcType="BIGINT" property="totalFeeAmount"/>
+        <result column="total_cost_amount" jdbcType="BIGINT" property="totalCostAmount"/>
+        <result column="total_profit_amount" jdbcType="BIGINT" property="totalProfitAmount"/>
+        <result column="fact_profit_amount" jdbcType="BIGINT" property="factProfitAmount"/>
+        <result column="fact_income_amount" jdbcType="BIGINT" property="factIncomeAmount"/>
+        <result column="invoice_amount" jdbcType="BIGINT" property="invoiceAmount"/>
+        <result column="accounting_date" jdbcType="INTEGER" property="accountingDate"/>
+        <result column="account_trans_id" jdbcType="VARCHAR" property="accountTransId"/>
+        <result column="invoice_id" jdbcType="VARCHAR" property="invoiceId"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.trans_id
+             , t.merchant_no
+             , t.account_date
+             , t.trans_type
+             , t.total_count
+             , t.total_amount
+             , t.total_fee_amount
+             , t.total_cost_amount
+             , t.total_profit_amount
+             , t.fact_profit_amount
+             , t.fact_income_amount
+             , t.invoice_amount
+             , t.accounting_date
+             , t.account_trans_id
+             , t.invoice_id
+             , t.state
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM merchant_profit t
+        WHERE
+        <if test="params.transId != null and params.transId.trim() != ''">
+            t.trans_id = #{params.transId} AND
+        </if>
+        <if test="params.merchantNo != null and params.merchantNo.trim() != ''">
+            t.merchant_no = #{params.merchantNo} AND
+        </if>
+        <if test="params.accountDate != null and params.accountDate.trim() != ''">
+            t.account_date = #{params.accountDate} AND
+        </if>
+        <if test="params.transType != null and params.transType.trim() != ''">
+            t.trans_type = #{params.transType} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

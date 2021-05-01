@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.account.mapper.AccountInfoMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.account.model.AccountInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="account_no" jdbcType="BIGINT" property="accountNo"/>
+        <result column="account_type" jdbcType="VARCHAR" property="accountType"/>
+        <result column="account_name" jdbcType="VARCHAR" property="accountName"/>
+        <result column="cust_no" jdbcType="BIGINT" property="custNo"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="amount" jdbcType="BIGINT" property="amount"/>
+        <result column="freeze_amount" jdbcType="BIGINT" property="freezeAmount"/>
+        <result column="available_amount" jdbcType="BIGINT" property="availableAmount"/>
+        <result column="account_date" jdbcType="INTEGER" property="accountDate"/>
+        <result column="last_day_use_amount" jdbcType="BIGINT" property="lastDayUseAmount"/>
+        <result column="last_trans_time" jdbcType="TIMESTAMP" property="lastTransTime"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="sign" jdbcType="VARCHAR" property="sign"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.account_no
+             , t.account_type
+             , t.account_name
+             , t.cust_no
+             , t.merchant_no
+             , t.amount
+             , t.freeze_amount
+             , t.available_amount
+             , t.account_date
+             , t.last_day_use_amount
+             , t.last_trans_time
+             , t.state
+             , t.sign
+             , t.version
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM account_info t
+        WHERE
+        <if test="params.accountNo != null and params.accountNo.trim() != ''">
+            t.account_no = #{params.accountNo} AND
+        </if>
+        <if test="params.accountType != null and params.accountType.trim() != ''">
+            t.account_type = #{params.accountType} AND
+        </if>
+        <if test="params.custNo != null and params.custNo.trim() != ''">
+            t.cust_no = #{params.custNo} AND
+        </if>
+        <if test="params.merchantNo != null and params.merchantNo.trim() != ''">
+            t.merchant_no = #{params.merchantNo} AND
+        </if>
+        <if test="params.amountBegin != null and params.amountBegin.trim() != ''">
+            t.amount BETWEEN #{params.amountBegin} AND #{params.amountEnd} AND
+        </if>
+        <if test="params.accountDate != null and params.accountDate.trim() != ''">
+            t.account_date = #{params.accountDate} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

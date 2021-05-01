@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.platform.mapper.GatewayRouteMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.platform.model.GatewayRoute">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="route_id" jdbcType="VARCHAR" property="routeId"/>
+        <result column="uri" jdbcType="VARCHAR" property="uri"/>
+        <result column="predicates" jdbcType="VARCHAR" property="predicates"/>
+        <result column="filters" jdbcType="VARCHAR" property="filters"/>
+        <result column="orders" jdbcType="INTEGER" property="orders"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+       <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT
+            t.id,
+            t.route_id,
+            t.uri,
+            t.predicates,
+            t.filters,
+            t.orders,
+            t.description,
+            t.state,
+            t.create_time,
+            t.update_time,
+            1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM gateway_route t
+        WHERE 1=1
+        <if test="params.routeId != null and params.routeId.trim() != ''">
+            AND t.route_id = #{params.routeId}
+        </if>
+        <if test="params.uri != null and params.uri.trim() != ''">
+            AND t.uri LIKE CONCAT(#{params.uri},'%')
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            AND t.state = #{params.state}
+        </if>
+        <if test="params.auditState != null and params.auditState.trim() != '' and params.auditState == 1">
+            AND t.audit_state != 0
+        </if>
+        <if test="params.auditState != null and params.auditState.trim() != '' and params.auditState != 1">
+            AND t.audit_state = #{params.auditState}
+        </if>
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

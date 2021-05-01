@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.channel.mapper.ChannelSupportPayTypeMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.channel.model.ChannelSupportPayType">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="day_use_amount" jdbcType="BIGINT" property="dayUseAmount"/>
+        <result column="day_limit_amount" jdbcType="BIGINT" property="dayLimitAmount"/>
+        <result column="day_use_number" jdbcType="BIGINT" property="dayUseNumber"/>
+        <result column="day_limit_number" jdbcType="BIGINT" property="dayLimitNumber"/>
+        <result column="month_use_amount" jdbcType="BIGINT" property="monthUseAmount"/>
+        <result column="month_limit_amount" jdbcType="BIGINT" property="monthLimitAmount"/>
+        <result column="last_date" jdbcType="INTEGER" property="lastDate"/>
+        <result column="holiday_support" jdbcType="TINYINT" property="holidaySupport"/>
+        <result column="bank_route_enabled" jdbcType="TINYINT" property="bankRouteEnabled"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id,
+               t.channel_no,
+               t.pay_type,
+               t.day_use_amount,
+               t.day_limit_amount,
+               t.day_use_number,
+               t.day_limit_number,
+               t.month_use_amount,
+               t.month_limit_amount,
+               t.last_date,
+               t.holiday_support,
+               t.bank_route_enabled,
+               t.state,
+               t.create_time,
+               t.update_time,
+               1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM channel_support_pay_type t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+    <update id="updateChannelPayTypeUse">
+        update channel_support_pay_type
+        set day_use_amount=day_use_amount + #{channelSupportPayType.dayUseAmount},
+            month_use_amount=month_use_amount + #{channelSupportPayType.dayUseAmount},
+            day_use_number=day_use_number + #{channelSupportPayType.dayUseNumber}
+        where channel_no = #{channelSupportPayType.channelNo}
+          and pay_type = #{channelSupportPayType.payType};
+    </update>
+
+    <update id="resetChannelPayTypeUse">
+        update channel_support_pay_type set day_use_amount=0,day_use_number=0
+        <if test="resetMonthUse">
+            , month_use_amount =0,
+        </if>
+        where day_use_amount >0
+        <if test="resetMonthUse">
+            or month_use_amount>0
+        </if>
+        order by month_use_amount limit 100
+    </update>
+
+</mapper>

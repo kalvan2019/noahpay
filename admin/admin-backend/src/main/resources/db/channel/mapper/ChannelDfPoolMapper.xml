@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.channel.mapper.ChannelDfPoolMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.channel.model.ChannelDfPool">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="channel_merchant_no" jdbcType="VARCHAR" property="channelMerchantNo"/>
+        <result column="channel_merchant_name" jdbcType="VARCHAR" property="channelMerchantName"/>
+        <result column="amount" jdbcType="BIGINT" property="amount"/>
+        <result column="freeze_amount" jdbcType="BIGINT" property="freezeAmount"/>
+        <result column="available_amount" jdbcType="BIGINT" property="availableAmount"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.channel_no
+             , t.merchant_no
+             , t.channel_merchant_no
+             , t.channel_merchant_name
+             , t.amount
+             , t.freeze_amount
+             , t.available_amount
+             , t.state
+             , t.remark
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM channel_df_pool t
+        WHERE
+        <if test="params.channelNo != null and params.channelNo.trim() != ''">
+            t.channel_no = #{params.channelNo} AND
+        </if>
+        <if test="params.merchantNo != null and params.merchantNo.trim() != ''">
+            t.merchant_no = #{params.merchantNo} AND
+        </if>
+        <if test="params.channelMerchantNo != null and params.channelMerchantNo.trim() != ''">
+            t.channel_merchant_no LIKE CONCAT(#{params.channelMerchantNo},'%') AND
+        </if>
+        <if test="params.channelMerchantName != null and params.channelMerchantName.trim() != ''">
+            t.channel_merchant_name LIKE CONCAT(#{params.channelMerchantName},'%') AND
+        </if>
+        <if test="params.availableAmountBegin != null and params.availableAmountBegin.trim() != ''">
+            t.available_amount BETWEEN #{params.availableAmountBegin} AND #{params.availableAmountEnd} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+    <select id="querySum" resultType="java.util.HashMap">
+        SELECT SUM(t.amount) amount
+        , SUM(t.freeze_amount) freezeAmount
+        , SUM(t.available_amount) availableAmount
+        <include refid="whereCondition"/>
+    </select>
+
+</mapper>

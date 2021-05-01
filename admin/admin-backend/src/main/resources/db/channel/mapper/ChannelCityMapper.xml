@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.channel.mapper.ChannelCityMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.channel.model.ChannelCity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="city" jdbcType="INTEGER" property="city"/>
+        <result column="channel_city" jdbcType="VARCHAR" property="channelCity"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.channel_no
+             , t.pay_type
+             , t.city
+             , t.channel_city
+             , t.remark
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM channel_city t
+        WHERE
+        <if test="params.channelNo != null and params.channelNo.trim() != ''">
+            t.channel_no = #{params.channelNo} AND
+        </if>
+        <if test="params.payType != null and params.payType.trim() != ''">
+            t.pay_type = #{params.payType} AND
+        </if>
+        <if test="params.city != null and params.city.trim() != ''">
+            t.city = #{params.city} AND
+        </if>
+        <if test="params.channelCity != null and params.channelCity.trim() != ''">
+            t.channel_city = #{params.channelCity} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

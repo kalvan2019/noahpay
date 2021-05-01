@@ -1,0 +1,18 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="footer_line">
+    <p>
+        <a th:href="${productConfig.homeUrl}" target="_blank">首页</a> |
+        <a th:href="${productConfig.homeUrl}" target="_blank">关于我们</a>|
+    </p>
+    <p class="bg4">
+        <a id="license" class="bg41"></a>
+        <a class="bg42" th:href="${productConfig.homeUrl}" target="_blank"></a>
+        <a class="bg43" th:href="${productConfig.homeUrl}" target="_blank"></a>
+        <a class="bg44" th:href="${productConfig.homeUrl}" target="_blank"></a>
+    </p>
+</div>
+<div id="license-show">
+    <i class="i Lclose"></i>
+    <img th:src="${productConfig.logoData}"
+         alt="" height="600"/>
+</div>

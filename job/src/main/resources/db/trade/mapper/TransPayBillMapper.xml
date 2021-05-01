@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.trade.mapper.TransPayBillMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.trade.model.TransPayBill">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="trans_id" jdbcType="VARCHAR" property="transId"/>
+        <result column="order_date" jdbcType="INTEGER" property="orderDate"/>
+        <result column="pay_date" jdbcType="INTEGER" property="payDate"/>
+        <result column="bank_account_no" jdbcType="VARCHAR" property="bankAccountNo"/>
+        <result column="bank_account_name" jdbcType="VARCHAR" property="bankAccountName"/>
+        <result column="bank_account_type" jdbcType="TINYINT" property="bankAccountType"/>
+        <result column="bank_account_expiry" jdbcType="VARCHAR" property="bankAccountExpiry"/>
+        <result column="bank_type" jdbcType="VARCHAR" property="bankType"/>
+        <result column="bank_name" jdbcType="VARCHAR" property="bankName"/>
+        <result column="bank_protocol" jdbcType="VARCHAR" property="bankProtocol"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="certificate_type" jdbcType="TINYINT" property="certificateType"/>
+        <result column="certificate_no" jdbcType="VARCHAR" property="certificateNo"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="pay_result_code" jdbcType="VARCHAR" property="payResultCode"/>
+        <result column="pay_result_note" jdbcType="VARCHAR" property="payResultNote"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="channel_send_sn" jdbcType="VARCHAR" property="channelSendSn"/>
+        <result column="channel_send_time" jdbcType="TIMESTAMP" property="channelSendTime"/>
+        <result column="channel_send_ext" jdbcType="VARCHAR" property="channelSendExt"/>
+        <result column="channel_merchant_no" jdbcType="VARCHAR" property="channelMerchantNo"/>
+        <result column="channel_merchant_name" jdbcType="VARCHAR" property="channelMerchantName"/>
+        <result column="channel_sub_merchant_no" jdbcType="VARCHAR" property="channelSubMerchantNo"/>
+        <result column="channel_amount" jdbcType="BIGINT" property="channelAmount"/>
+        <result column="channel_mcc" jdbcType="VARCHAR" property="channelMcc"/>
+        <result column="channel_city" jdbcType="VARCHAR" property="channelCity"/>
+        <result column="channel_bank_account_type" jdbcType="VARCHAR" property="channelBankAccountType"/>
+        <result column="channel_bank_type" jdbcType="VARCHAR" property="channelBankType"/>
+        <result column="channel_certificate_type" jdbcType="VARCHAR" property="channelCertificateType"/>
+        <result column="channel_account_date" jdbcType="INTEGER" property="channelAccountDate"/>
+        <result column="channel_recv_sn" jdbcType="VARCHAR" property="channelRecvSn"/>
+        <result column="channel_recv_time" jdbcType="TIMESTAMP" property="channelRecvTime"/>
+        <result column="channel_recv_ext" jdbcType="VARCHAR" property="channelRecvExt"/>
+        <result column="channel_recv_url" jdbcType="VARCHAR" property="channelRecvUrl"/>
+        <result column="channel_result_code" jdbcType="VARCHAR" property="channelResultCode"/>
+        <result column="channel_result_note" jdbcType="VARCHAR" property="channelResultNote"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="check_state" jdbcType="TINYINT" property="checkState"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.trans_id
+             , t.order_date
+             , t.pay_date
+             , t.bank_account_no
+             , t.bank_account_name
+             , t.bank_account_type
+             , t.bank_account_expiry
+             , t.bank_type
+             , t.bank_name
+             , t.bank_protocol
+             , t.mobile
+             , t.certificate_type
+             , t.certificate_no
+             , t.pay_type
+             , t.pay_result_code
+             , t.pay_result_note
+             , t.channel_no
+             , t.channel_send_sn
+             , t.channel_send_time
+             , t.channel_send_ext
+             , t.channel_merchant_no
+             , t.channel_merchant_name
+             , t.channel_sub_merchant_no
+             , t.channel_amount
+             , t.channel_mcc
+             , t.channel_city
+             , t.channel_bank_account_type
+             , t.channel_bank_type
+             , t.channel_certificate_type
+             , t.channel_account_date
+             , t.channel_recv_sn
+             , t.channel_recv_time
+             , t.channel_recv_ext
+             , t.channel_recv_url
+             , t.channel_result_code
+             , t.channel_result_note
+             , t.state
+             , t.check_state
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM trans_pay_bill t
+        WHERE
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+     <update id="createBillByDate" parameterType="String">
+        CREATE TABLE If Not Exists  `trans_pay_bill_${date}` (
+          id bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+          trans_id varchar(20) NOT NULL COMMENT '交易流水号',
+          order_date int unsigned NOT NULL COMMENT '订单日期',
+          pay_date int unsigned NOT NULL COMMENT '支付日期',
+
+          bank_account_no varchar(128) NOT NULL DEFAULT '' COMMENT '银行帐号,加密存储',
+          bank_account_name varchar(128) NOT NULL DEFAULT '' COMMENT '银行户名,加密存储',
+          bank_account_type tinyint unsigned NOT NULL DEFAULT '0' COMMENT '银行帐户类型',
+          bank_account_expiry varchar(12) NOT NULL DEFAULT '' COMMENT '银行卡有效期,MMyy',
+          bank_type varchar(9) NOT NULL DEFAULT '0' COMMENT '行别',
+          bank_name varchar(128) NOT NULL DEFAULT '' COMMENT '行名',
+          bank_protocol varchar(50) NOT NULL DEFAULT '' COMMENT '银行协议号',
+          mobile varchar(128) NOT NULL DEFAULT '' COMMENT '客户手机,加密存储',
+          certificate_type tinyint unsigned NOT NULL DEFAULT '0' COMMENT '证件类型',
+          certificate_no varchar(128) NOT NULL DEFAULT '' COMMENT '证件号码,加密存储',
+
+          pay_type tinyint unsigned NOT NULL COMMENT '支付类型',
+          pay_result_code varchar(20) NOT NULL DEFAULT '' COMMENT '支付网关返回码',
+          pay_result_note varchar(100) NOT NULL DEFAULT '' COMMENT '支付网关备注',
+
+          channel_no int unsigned NOT NULL DEFAULT '0' COMMENT '渠道编号',
+          channel_send_sn varchar(50) NOT NULL DEFAULT '' COMMENT '送往渠道流水号',
+          channel_send_time datetime NULL DEFAULT NULL COMMENT '送往渠道时间',
+          channel_send_ext json NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '送往渠道扩展数据,json格式转换后的结果原样调用渠道',
+          channel_merchant_no varchar(50) NOT NULL DEFAULT '' COMMENT '渠道商户号',
+          channel_merchant_name varchar(100) NOT NULL DEFAULT '' COMMENT '渠道商户名',
+          channel_sub_merchant_no varchar(50) NOT NULL DEFAULT '' COMMENT '渠道子商户号',
+          channel_amount bigint unsigned NOT NULL DEFAULT '0' COMMENT '送往渠道金额',
+
+          channel_mcc varchar(15) NOT NULL DEFAULT '' COMMENT '渠道类目',
+          channel_city varchar(15) NOT NULL DEFAULT '' COMMENT '渠道城市',
+          channel_bank_account_type varchar(15) NOT NULL DEFAULT '' COMMENT '渠道账户类型',
+          channel_bank_type varchar(20) NOT NULL DEFAULT '' COMMENT '渠道行别',
+          channel_certificate_type varchar(30) NOT NULL DEFAULT '' COMMENT '渠道证件类型',
+
+          channel_account_date int unsigned NOT NULL DEFAULT '0' COMMENT '渠道会计日期',
+          channel_recv_sn varchar(50) NOT NULL DEFAULT '' COMMENT '渠道返回流水号',
+          channel_recv_time datetime NULL DEFAULT NULL COMMENT '渠道返回时间',
+          channel_recv_ext json NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '渠道返回扩展数据，再做其它交易时比如退款、查询原样传送',
+          channel_recv_url varchar(100) NOT NULL DEFAULT '' COMMENT '渠道返回链接',
+          channel_result_code varchar(20) NOT NULL DEFAULT '' COMMENT '渠道返回码',
+          channel_result_note varchar(100) NOT NULL DEFAULT '' COMMENT '渠道返回备注',
+
+          state tinyint unsigned NOT NULL COMMENT '交易状态,0交易成功1待发起2已发起3超时订单关闭4已受理5交易失败6交易成功(异步入账中)7交易超时8实名认证失败9实名认证成功10支付待确认',
+          check_state tinyint unsigned NOT NULL  COMMENT '对账状态,0-平账;1-不平账;2-未对账',
+          create_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+          update_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+
+          PRIMARY KEY (id),
+          KEY idx_trans_id (trans_id,state),
+          KEY idx_order_date (order_date,state),
+          KEY idx_update_time (update_time,state),
+          KEY idx_channel_send_sn (channel_no,channel_send_sn)
+        ) ENGINE=InnoDB COMMENT='交易订单支付明细';
+    </update>
+</mapper>

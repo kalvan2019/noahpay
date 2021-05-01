@@ -1,0 +1,40 @@
+server:
+  port: ${SERVER_PORT:8013}
+  servlet:
+    context-path: /
+spring:
+  application:
+    name: job
+  main:
+    allow-bean-definition-overriding: true
+  profiles: #环境配置使用 local|dev(默认)|test|uat|pre|prod
+    active: '@spring.profiles.active@'
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Chongqing
+  cloud:
+    nacos:
+      config:
+        username: ${NACOS_USERNAME:kalvan}
+        password: ${NACOS_PASSWORD:kalvan1688}
+        server-addr: ${NACOS_ADDR:nacos.test.com:8848}
+        namespace: ${NACOS_NAMESPACE:${spring.profiles.active}}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        file-extension: yaml
+        extension-configs: #启动配置
+          - data-id: ${spring.application.name}.yaml
+            refresh: true
+          - data-id: i18n-dict.yaml
+            refresh: true
+          - data-id: i18n-code.yaml
+            refresh: true
+          - data-id: i18n-message.yaml
+            refresh: true
+          - data-id: registry.yaml
+          - data-id: sentinel.yaml
+#          - data-id: redis.yaml
+          - data-id: jetcache.yaml
+          - data-id: spring-cloud-bus.yaml
+          - data-id: endpoint.yaml
+          - data-id: mail.yaml
+          - data-id: zk.yaml

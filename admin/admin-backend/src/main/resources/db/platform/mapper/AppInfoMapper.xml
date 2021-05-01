@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.platform.mapper.AppInfoMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.platform.model.AppInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="app_id" jdbcType="VARCHAR" property="appId"/>
+        <result column="app_name" jdbcType="VARCHAR" property="appName"/>
+        <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+        <result column="bind_ip" jdbcType="VARCHAR" property="bindIp"/>
+        <result column="bind_domain" jdbcType="VARCHAR" property="bindDomain"/>
+        <result column="bind_key" jdbcType="VARCHAR" property="bindKey"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.app_id
+             , t.app_name
+             , t.group_name
+             , t.bind_ip
+             , t.bind_domain
+             , t.bind_key
+             , t.state
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM app_info t
+        WHERE
+        <if test="params.appId != null and params.appId.trim() != ''">
+            t.app_id LIKE CONCAT(#{params.appId},'%') AND
+        </if>
+        <if test="params.appName != null and params.appName.trim() != ''">
+            t.app_name LIKE CONCAT(#{params.appName},'%') AND
+        </if>
+        <if test="params.groupName != null and params.groupName.trim() != ''">
+            t.group_name = #{params.groupName} AND
+        </if>
+        <if test="params.bindIp != null and params.bindIp.trim() != ''">
+            t.bind_ip LIKE CONCAT(#{params.bindIp},'%') AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+    <select id="getAllApp" resultMap="BaseResultMap">
+        SELECT t.app_id
+             , t.app_name
+        from app_info t  where state=0
+    </select>
+</mapper>

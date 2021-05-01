@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.settle.mapper.PartnerProfitMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.settle.model.PartnerProfit">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="partner_no" jdbcType="BIGINT" property="partnerNo"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="bank_account_no" jdbcType="VARCHAR" property="bankAccountNo"/>
+        <result column="account_begin_date" jdbcType="INTEGER" property="accountBeginDate"/>
+        <result column="account_end_date" jdbcType="INTEGER" property="accountEndDate"/>
+        <result column="accounting_date" jdbcType="INTEGER" property="accountingDate"/>
+        <result column="trans_total_count" jdbcType="BIGINT" property="transTotalCount"/>
+        <result column="trans_total_amount" jdbcType="BIGINT" property="transTotalAmount"/>
+        <result column="trans_profit_amount" jdbcType="BIGINT" property="transProfitAmount"/>
+        <result column="df_total_count" jdbcType="BIGINT" property="dfTotalCount"/>
+        <result column="df_total_amount" jdbcType="BIGINT" property="dfTotalAmount"/>
+        <result column="df_profit_amount" jdbcType="BIGINT" property="dfProfitAmount"/>
+        <result column="rf_total_count" jdbcType="BIGINT" property="rfTotalCount"/>
+        <result column="rf_total_amount" jdbcType="BIGINT" property="rfTotalAmount"/>
+        <result column="rf_profit_amount" jdbcType="BIGINT" property="rfProfitAmount"/>
+        <result column="return_ticket_count" jdbcType="BIGINT" property="returnTicketCount"/>
+        <result column="return_ticket_amount" jdbcType="BIGINT" property="returnTicketAmount"/>
+        <result column="return_ticket_profit_amount" jdbcType="BIGINT" property="returnTicketProfitAmount"/>
+        <result column="total_profit_amount" jdbcType="BIGINT" property="totalProfitAmount"/>
+        <result column="account_in_id" jdbcType="VARCHAR" property="accountInId"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="settle_date" jdbcType="INTEGER" property="settleDate"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.partner_no
+             , t.merchant_no
+             , t.bank_account_no
+             , t.account_begin_date
+             , t.account_end_date
+             , t.accounting_date
+             , t.trans_total_count
+             , t.trans_total_amount
+             , t.trans_profit_amount
+             , t.df_total_count
+             , t.df_total_amount
+             , t.df_profit_amount
+             , t.rf_total_count
+             , t.rf_total_amount
+             , t.rf_profit_amount
+             , t.return_ticket_count
+             , t.return_ticket_amount
+             , t.return_ticket_profit_amount
+             , t.total_profit_amount
+             , t.account_in_id
+             , t.state
+             , t.order_id
+             , t.settle_date
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM partner_profit t
+        WHERE
+        <if test="params.partnerNo != null and params.partnerNo.trim() != ''">
+            t.partner_no = #{params.partnerNo} AND
+        </if>
+        <if test="params.merchantNo != null and params.merchantNo.trim() != ''">
+            t.merchant_no = #{params.merchantNo} AND
+        </if>
+        <if test="params.bankAccountNo != null and params.bankAccountNo.trim() != ''">
+            t.bank_account_no = #{params.bankAccountNo} AND
+        </if>
+        <if test="params.accountBeginDate != null and params.accountBeginDate.trim() != ''">
+            t.account_begin_date = #{params.accountBeginDate} AND
+        </if>
+        <if test="params.accountEndDate != null and params.accountEndDate.trim() != ''">
+            t.account_end_date = #{params.accountEndDate} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        <if test="params.orderId != null and params.orderId.trim() != ''">
+            t.order_id = #{params.orderId} AND
+        </if>
+        <if test="params.settleDate != null and params.settleDate.trim() != ''">
+            t.settle_date = #{params.settleDate} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

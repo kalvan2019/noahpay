@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.platform.mapper.RoleMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.platform.model.Role">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="role_desc" jdbcType="VARCHAR" property="roleDesc"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectSql">
+        FROM role t
+        WHERE 1=1
+        <if test="params.roleName != null and params.roleName.trim() != ''">
+            AND t.role_name LIKE CONCAT(#{params.roleName},'%')
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            AND t.state = #{params.state}
+        </if>
+        <if test="params.createTimeBegin != null and params.createTimeBegin.trim() != ''">
+            AND t.create_time BETWEEN #{params.createTimeBegin} AND #{params.createTimeEnd}
+        </if>
+        ORDER BY t.id DESC
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        SELECT
+        t.id,
+        t.role_name,
+        t.role_desc,
+        t.state,
+        t.create_time,
+        t.update_time,
+        1
+        <include refid="selectSql"/>
+    </select>
+
+    <select id="selectRoleListByAdminId" resultMap="BaseResultMap">
+		select r.id ,r.role_name,r.state from role r
+		inner join admin_role ar on r.id = ar.role_id left join admin a on a.id = ar.admin_id
+		where a.id =#{id}
+	</select>
+
+</mapper>

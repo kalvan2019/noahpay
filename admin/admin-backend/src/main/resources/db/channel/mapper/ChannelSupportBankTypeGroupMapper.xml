@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.channel.mapper.ChannelSupportBankTypeGroupMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.channel.model.ChannelSupportBankTypeGroup">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="bank_type_group" jdbcType="VARCHAR" property="bankTypeGroup"/>
+        <result column="bank_type" jdbcType="VARCHAR" property="bankType"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.bank_type_group
+             , t.bank_type
+             , t.state
+             , t.update_time
+             , t.create_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM channel_support_bank_type_group t
+        WHERE
+        <if test="params.bankTypeGroup != null and params.bankTypeGroup.trim() != ''">
+            t.bank_type_group LIKE CONCAT(#{params.bankTypeGroup},'%') AND
+        </if>
+        <if test="params.bankType != null and params.bankType.trim() != ''">
+            t.bank_type = #{params.bankType} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

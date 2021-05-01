@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.risk.mapper.BlackListMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.risk.model.BlackList">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="black_type" jdbcType="TINYINT" property="blackType"/>
+        <result column="cust_no" jdbcType="BIGINT" property="custNo"/>
+        <result column="cust_name" jdbcType="VARCHAR" property="custName"/>
+        <result column="certificate_no" jdbcType="VARCHAR" property="certificateNo"/>
+        <result column="bank_account_no" jdbcType="VARCHAR" property="bankAccountNo"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="business_license_no" jdbcType="VARCHAR" property="businessLicenseNo"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.black_type
+             , t.cust_no
+             , t.cust_name
+             , t.certificate_no
+             , t.bank_account_no
+             , t.email
+             , t.mobile
+             , t.business_license_no
+             , t.state
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM black_list t
+        WHERE
+        <if test="params.blackType != null and params.blackType.trim() != ''">
+            t.black_type = #{params.blackType} AND
+        </if>
+        <if test="params.custNo != null and params.custNo.trim() != ''">
+            t.cust_no = #{params.custNo} AND
+        </if>
+        <if test="params.custName != null and params.custName.trim() != ''">
+            t.cust_name = #{params.custName} AND
+        </if>
+        <if test="params.certificateNo != null and params.certificateNo.trim() != ''">
+            t.certificate_no = #{params.certificateNo} AND
+        </if>
+        <if test="params.bankAccountNo != null and params.bankAccountNo.trim() != ''">
+            t.bank_account_no = #{params.bankAccountNo} AND
+        </if>
+        <if test="params.email != null and params.email.trim() != ''">
+            t.email = #{params.email} AND
+        </if>
+        <if test="params.mobile != null and params.mobile.trim() != ''">
+            t.mobile = #{params.mobile} AND
+        </if>
+        <if test="params.businessLicenseNo != null and params.businessLicenseNo.trim() != ''">
+            t.business_license_no = #{params.businessLicenseNo} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        <if test="params.createTimeBegin != null and params.createTimeBegin.trim() != ''">
+            t.create_time BETWEEN #{params.createTimeBegin} AND #{params.createTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

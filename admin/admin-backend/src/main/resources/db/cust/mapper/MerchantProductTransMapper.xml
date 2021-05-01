@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.cust.mapper.MerchantProductTransMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.cust.model.MerchantProductTrans">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="trans_type" jdbcType="TINYINT" property="transType"/>
+        <result column="limit_max_amount" jdbcType="BIGINT" property="limitMaxAmount"/>
+        <result column="day_limit_amount" jdbcType="BIGINT" property="dayLimitAmount"/>
+        <result column="day_limit_number" jdbcType="BIGINT" property="dayLimitNumber"/>
+        <result column="month_limit_amount" jdbcType="BIGINT" property="monthLimitAmount"/>
+        <result column="month_limit_number" jdbcType="BIGINT" property="monthLimitNumber"/>
+        <result column="effective_date" jdbcType="INTEGER" property="effectiveDate"/>
+        <result column="expiry_date" jdbcType="INTEGER" property="expiryDate"/>
+        <result column="sign_audit_type" jdbcType="TINYINT" property="signAuditType"/>
+        <result column="sign_check_sms" jdbcType="TINYINT" property="signCheckSms"/>
+        <result column="sign_send_sms" jdbcType="TINYINT" property="signSendSms"/>
+        <result column="trans_deal_type" jdbcType="TINYINT" property="transDealType"/>
+        <result column="trans_audit_type" jdbcType="TINYINT" property="transAuditType"/>
+        <result column="trans_check_protocol" jdbcType="TINYINT" property="transCheckProtocol"/>
+        <result column="trans_check_sms" jdbcType="TINYINT" property="transCheckSms"/>
+        <result column="trans_send_sms" jdbcType="TINYINT" property="transSendSms"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.merchant_no
+             , t.trans_type
+             , t.limit_max_amount
+             , t.day_limit_amount
+             , t.day_limit_number
+             , t.month_limit_amount
+             , t.month_limit_number
+             , t.effective_date
+             , t.expiry_date
+             , t.sign_audit_type
+             , t.sign_check_sms
+             , t.sign_send_sms
+             , t.trans_deal_type
+             , t.trans_audit_type
+             , t.trans_check_protocol
+             , t.trans_check_sms
+             , t.trans_send_sms
+             , t.state
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM merchant_product_trans t
+        WHERE
+        <if test="params.merchantNo != null and params.merchantNo.trim() != ''">
+            t.merchant_no = #{params.merchantNo} AND
+        </if>
+        <if test="params.transType != null and params.transType.trim() != ''">
+            t.trans_type = #{params.transType} AND
+        </if>
+        <if test="params.effectiveDate != null and params.effectiveDate.trim() != ''">
+            t.effective_date <![CDATA[ >= ]]> #{params.effectiveDate} AND
+        </if>
+        <if test="params.expiryDate != null and params.expiryDate.trim() != ''">
+            t.expiry_date <![CDATA[ <= ]]> #{params.expiryDate} AND
+        </if>
+        <if test="params.signAuditType != null and params.signAuditType.trim() != ''">
+            t.sign_audit_type = #{params.signAuditType} AND
+        </if>
+        <if test="params.signCheckSms != null and params.signCheckSms.trim() != ''">
+            t.sign_check_sms = #{params.signCheckSms} AND
+        </if>
+        <if test="params.signSendSms != null and params.signSendSms.trim() != ''">
+            t.sign_send_sms = #{params.signSendSms} AND
+        </if>
+        <if test="params.transDealType != null and params.transDealType.trim() != ''">
+            t.trans_deal_type = #{params.transDealType} AND
+        </if>
+        <if test="params.transAuditType != null and params.transAuditType.trim() != ''">
+            t.trans_audit_type = #{params.transAuditType} AND
+        </if>
+        <if test="params.transCheckProtocol != null and params.transCheckProtocol.trim() != ''">
+            t.trans_check_protocol = #{params.transCheckProtocol} AND
+        </if>
+        <if test="params.transCheckSms != null and params.transCheckSms.trim() != ''">
+            t.trans_check_sms = #{params.transCheckSms} AND
+        </if>
+        <if test="params.transSendSms != null and params.transSendSms.trim() != ''">
+            t.trans_send_sms = #{params.transSendSms} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

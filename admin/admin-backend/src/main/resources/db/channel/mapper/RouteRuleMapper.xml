@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.channel.mapper.RouteRuleMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.channel.model.RouteRule">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="route_rule" jdbcType="VARCHAR" property="routeRule"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="bank_type" jdbcType="VARCHAR" property="bankType"/>
+        <result column="bank_account_type" jdbcType="TINYINT" property="bankAccountType"/>
+        <result column="limit_min_amount" jdbcType="BIGINT" property="limitMinAmount"/>
+        <result column="limit_max_amount" jdbcType="BIGINT" property="limitMaxAmount"/>
+        <result column="begin_date" jdbcType="INTEGER" property="beginDate"/>
+        <result column="end_date" jdbcType="INTEGER" property="endDate"/>
+        <result column="begin_time" jdbcType="VARCHAR" property="beginTime"/>
+        <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
+        <result column="priority" jdbcType="INTEGER" property="priority"/>
+        <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.route_rule
+             , t.channel_no
+             , t.bank_type
+             , t.bank_account_type
+             , t.limit_min_amount
+             , t.limit_max_amount
+             , t.begin_date
+             , t.end_date
+             , t.begin_time
+             , t.end_time
+             , t.priority
+             , t.weight
+             , t.remark
+             , t.state
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM route_rule t
+        WHERE
+        <if test="params.routeRule != null and params.routeRule.trim() != ''">
+            t.route_rule LIKE CONCAT(#{params.routeRule},'%') AND
+        </if>
+        <if test="params.channelNo != null and params.channelNo.trim() != ''">
+            t.channel_no = #{params.channelNo} AND
+        </if>
+        <if test="params.bankType != null and params.bankType.trim() != ''">
+            t.bank_type = #{params.bankType} AND
+        </if>
+        <if test="params.bankAccountType != null and params.bankAccountType.trim() != ''">
+            t.bank_account_type = #{params.bankAccountType} AND
+        </if>
+        <if test="params.limitMinAmount != null and params.limitMinAmount.trim() != ''">
+            t.limit_min_amount <![CDATA[ >= ]]> #{params.limitMinAmount} AND
+        </if>
+        <if test="params.limitMaxAmount != null and params.limitMaxAmount.trim() != ''">
+            t.limit_max_amount <![CDATA[ <= ]]> #{params.limitMaxAmount} AND
+        </if>
+        <if test="params.beginDate != null and params.beginDate.trim() != ''">
+            t.begin_date <![CDATA[ >= ]]> #{params.beginDate} AND
+        </if>
+        <if test="params.endDate != null and params.endDate.trim() != ''">
+            t.end_date <![CDATA[ <= ]]> #{params.endDate} AND
+        </if>
+        <if test="params.beginTime != null and params.beginTime.trim() != ''">
+            t.begin_time <![CDATA[ >= ]]> #{params.beginTime} AND
+        </if>
+        <if test="params.endTime != null and params.endTime.trim() != ''">
+            t.end_time <![CDATA[ <= ]]> #{params.endTime} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        <if test="params.createTimeBegin != null and params.createTimeBegin.trim() != ''">
+            t.create_time BETWEEN #{params.createTimeBegin} AND #{params.createTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

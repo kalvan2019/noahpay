@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.noahpay.pay.commons.db.platform.mapper.RoleMenuMapper">
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.platform.model.RoleMenu">
+        <id column="role_id" property="roleId" jdbcType="BIGINT"/>
+        <id column="menu_id" property="menuId" jdbcType="VARCHAR"/>
+    </resultMap>
+    <delete id="deleteChildrenButton">
+        delete from role_menu where menu_id in (
+            select id from menu where parent_id in ( select id from ( select id  from menu where  parent_id = #{id} ) as temp )
+        )
+    </delete>
+    <delete id="deleteChildrenMenu">
+        delete from role_menu where menu_id in (select id from menu where parent_id = #{id})
+    </delete>
+</mapper>

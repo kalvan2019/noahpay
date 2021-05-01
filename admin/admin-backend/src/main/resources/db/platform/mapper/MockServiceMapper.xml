@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.platform.mapper.MockServiceMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.platform.model.MockService">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="service_id" jdbcType="VARCHAR" property="serviceId"/>
+        <result column="service" jdbcType="VARCHAR" property="service"/>
+        <result column="mock_url" jdbcType="VARCHAR" property="mockUrl"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.service_id
+             , t.service
+             , t.mock_url
+             , t.state
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM mock_service t
+        WHERE
+        <if test="params.serviceId != null and params.serviceId.trim() != ''">
+            t.service_id LIKE CONCAT(#{params.serviceId},'%') AND
+        </if>
+        <if test="params.service != null and params.service.trim() != ''">
+            t.service LIKE CONCAT(#{params.service},'%') AND
+        </if>
+        <if test="params.mockUrl != null and params.mockUrl.trim() != ''">
+            t.mock_url LIKE CONCAT(#{params.mockUrl},'%') AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

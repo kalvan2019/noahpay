@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.channel.mapper.ChannelInfoMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.channel.model.ChannelInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="channel_name" jdbcType="VARCHAR" property="channelName"/>
+        <result column="channel_class" jdbcType="VARCHAR" property="channelClass"/>
+        <result column="channel_merchant_no" jdbcType="VARCHAR" property="channelMerchantNo"/>
+        <result column="merchant_pool_convert" jdbcType="TINYINT" property="merchantPoolConvert"/>
+        <result column="multi_merchant_convert" jdbcType="TINYINT" property="multiMerchantConvert"/>
+        <result column="send_sn_convert" jdbcType="TINYINT" property="sendSnConvert"/>
+        <result column="bank_type_convert" jdbcType="TINYINT" property="bankTypeConvert"/>
+        <result column="bank_account_type_convert" jdbcType="TINYINT" property="bankAccountTypeConvert"/>
+        <result column="certificate_type_convert" jdbcType="TINYINT" property="certificateTypeConvert"/>
+        <result column="city_convert" jdbcType="TINYINT" property="cityConvert"/>
+        <result column="mcc_convert" jdbcType="TINYINT" property="mccConvert"/>
+        <result column="cust_convert" jdbcType="TINYINT" property="custConvert"/>
+        <result column="connection_timeout" jdbcType="INTEGER" property="connectionTimeout"/>
+        <result column="connection_max_num" jdbcType="INTEGER" property="connectionMaxNum"/>
+        <result column="read_timeout" jdbcType="INTEGER" property="readTimeout"/>
+        <result column="sms_support" jdbcType="TINYINT" property="smsSupport"/>
+        <result column="check_support" jdbcType="TINYINT" property="checkSupport"/>
+        <result column="check_time" jdbcType="VARCHAR" property="checkTime"/>
+        <result column="check_field" jdbcType="TINYINT" property="checkField"/>
+        <result column="settlement_time" jdbcType="VARCHAR" property="settlementTime"/>
+        <result column="settlement_bank_account_no" jdbcType="VARCHAR" property="settlementBankAccountNo"/>
+        <result column="settlement_bank_account_name" jdbcType="VARCHAR" property="settlementBankAccountName"/>
+        <result column="settlement_bank_type" jdbcType="VARCHAR" property="settlementBankType"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id,
+               t.channel_no,
+               t.channel_name,
+               t.channel_class,
+               t.channel_merchant_no,
+               t.merchant_pool_convert,
+               t.multi_merchant_convert,
+               t.send_sn_convert,
+               t.bank_type_convert,
+               t.bank_account_type_convert,
+               t.certificate_type_convert,
+               t.city_convert,
+               t.mcc_convert,
+               t.cust_convert,
+               t.connection_timeout,
+               t.connection_max_num,
+               t.read_timeout,
+               t.sms_support,
+               t.check_support,
+               t.check_time,
+               t.check_field,
+               t.settlement_time,
+               t.settlement_bank_account_no,
+               t.settlement_bank_account_name,
+               t.settlement_bank_type,
+               t.state,
+               t.create_time,
+               t.update_time,
+               1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM channel_info t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

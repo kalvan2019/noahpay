@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.cust.mapper.MerchantConsumerProtocolMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.cust.model.MerchantConsumerProtocol">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="merchant_protocol_no" jdbcType="VARCHAR" property="merchantProtocolNo"/>
+        <result column="sub_merchant_no" jdbcType="BIGINT" property="subMerchantNo"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="channel_merchant_no" jdbcType="VARCHAR" property="channelMerchantNo"/>
+        <result column="channel_sub_merchant_no" jdbcType="VARCHAR" property="channelSubMerchantNo"/>
+        <result column="effective_time" jdbcType="INTEGER" property="effectiveTime"/>
+        <result column="expiry_time" jdbcType="INTEGER" property="expiryTime"/>
+        <result column="limit_max_amount" jdbcType="BIGINT" property="limitMaxAmount"/>
+        <result column="bank_protocol_no" jdbcType="VARCHAR" property="bankProtocolNo"/>
+        <result column="bank_account_no" jdbcType="VARCHAR" property="bankAccountNo"/>
+        <result column="bank_account_name" jdbcType="VARCHAR" property="bankAccountName"/>
+        <result column="bank_account_type" jdbcType="TINYINT" property="bankAccountType"/>
+        <result column="bank_account_expiry" jdbcType="VARCHAR" property="bankAccountExpiry"/>
+        <result column="bank_account_level" jdbcType="TINYINT" property="bankAccountLevel"/>
+        <result column="bank_type" jdbcType="VARCHAR" property="bankType"/>
+        <result column="bank_name" jdbcType="VARCHAR" property="bankName"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="ext_data" jdbcType="VARCHAR" property="extData"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="certificate_type" jdbcType="TINYINT" property="certificateType"/>
+        <result column="certificate_no" jdbcType="VARCHAR" property="certificateNo"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.merchant_no
+             , t.merchant_protocol_no
+             , t.sub_merchant_no
+             , t.channel_no
+             , t.channel_merchant_no
+             , t.channel_sub_merchant_no
+             , t.effective_time
+             , t.expiry_time
+             , t.limit_max_amount
+             , t.bank_protocol_no
+             , t.bank_account_no
+             , t.bank_account_name
+             , t.bank_account_type
+             , t.bank_account_expiry
+             , t.bank_account_level
+             , t.bank_type
+             , t.bank_name
+             , t.mobile
+             , t.ext_data
+             , t.pay_type
+             , t.certificate_type
+             , t.certificate_no
+             , t.state
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM merchant_consumer_protocol t
+        WHERE
+        <if test="params.merchantNo != null and params.merchantNo.trim() != ''">
+            t.merchant_no = #{params.merchantNo} AND
+        </if>
+        <if test="params.merchantProtocolNo != null and params.merchantProtocolNo.trim() != ''">
+            t.merchant_protocol_no = #{params.merchantProtocolNo} AND
+        </if>
+        <if test="params.channelNo != null and params.channelNo.trim() != ''">
+            t.channel_no = #{params.channelNo} AND
+        </if>
+        <if test="params.channelMerchantNo != null and params.channelMerchantNo.trim() != ''">
+            t.channel_merchant_no = #{params.channelMerchantNo} AND
+        </if>
+        <if test="params.effectiveTime != null and params.effectiveTime.trim() != ''">
+            t.effective_time <![CDATA[ >= ]]> #{params.effectiveTime} AND
+        </if>
+        <if test="params.expiryTime != null and params.expiryTime.trim() != ''">
+            t.expiry_time <![CDATA[ <= ]]> #{params.expiryTime} AND
+        </if>
+        <if test="params.bankProtocolNo != null and params.bankProtocolNo.trim() != ''">
+            t.bank_protocol_no = #{params.bankProtocolNo} AND
+        </if>
+        <if test="params.bankAccountNo != null and params.bankAccountNo.trim() != ''">
+            t.bank_account_no = #{params.bankAccountNo} AND
+        </if>
+        <if test="params.bankType != null and params.bankType.trim() != ''">
+            t.bank_type = #{params.bankType} AND
+        </if>
+        <if test="params.mobile != null and params.mobile.trim() != ''">
+            t.mobile = #{params.mobile} AND
+        </if>
+        <if test="params.payType != null and params.payType.trim() != ''">
+            t.pay_type = #{params.payType} AND
+        </if>
+        <if test="params.certificateNo != null and params.certificateNo.trim() != ''">
+            t.certificate_no = #{params.certificateNo} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

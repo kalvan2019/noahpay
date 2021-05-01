@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.cust.mapper.FeeMerchantMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.cust.model.FeeMerchant">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="trans_type" jdbcType="TINYINT" property="transType"/>
+        <result column="fee_mode" jdbcType="TINYINT" property="feeMode"/>
+        <result column="fee_object" jdbcType="TINYINT" property="feeObject"/>
+        <result column="fee_rule" jdbcType="VARCHAR" property="feeRule"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT
+            t.id,
+            t.merchant_no,
+            t.trans_type,
+            t.fee_mode,
+            t.fee_object,
+            t.fee_rule,
+            t.state,
+            t.create_time,
+            t.update_time,
+            1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM fee_merchant t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+    <select id="getFeeMerchant" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        FROM fee_merchant t
+        WHERE merchant_no=#{merchantNo}
+        AND (trans_type=0 OR trans_type=#{transType} )
+        AND state=0 ORDER BY trans_type DESC LIMIT 1
+    </select>
+
+</mapper>

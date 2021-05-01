@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.risk.mapper.RiskListMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.risk.model.RiskList">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="ref_trans_id" jdbcType="VARCHAR" property="refTransId"/>
+        <result column="risk_level" jdbcType="INTEGER" property="riskLevel"/>
+        <result column="risk_params" jdbcType="VARCHAR" property="riskParams"/>
+        <result column="risk_reason" jdbcType="VARCHAR" property="riskReason"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id,
+               t.ref_trans_id,
+               t.risk_level,
+               t.risk_params,
+               t.risk_reason,
+               t.create_time,
+               1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM risk_list t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

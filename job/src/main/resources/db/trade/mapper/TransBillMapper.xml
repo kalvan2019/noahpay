@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.trade.mapper.TransBillMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.trade.model.TransBill">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="trans_id" jdbcType="VARCHAR" property="transId"/>
+        <result column="trans_date" jdbcType="INTEGER" property="transDate"/>
+        <result column="trans_type" jdbcType="TINYINT" property="transType"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_date" jdbcType="INTEGER" property="orderDate"/>
+        <result column="order_note" jdbcType="VARCHAR" property="orderNote"/>
+        <result column="order_amount" jdbcType="BIGINT" property="orderAmount"/>
+        <result column="order_domain" jdbcType="VARCHAR" property="orderDomain"/>
+        <result column="order_ip" jdbcType="VARCHAR" property="orderIp"/>
+        <result column="order_device_info" jdbcType="VARCHAR" property="orderDeviceInfo"/>
+        <result column="order_mcc" jdbcType="INTEGER" property="orderMcc"/>
+        <result column="order_city" jdbcType="INTEGER" property="orderCity"/>
+        <result column="order_expiry_time" jdbcType="TIMESTAMP" property="orderExpiryTime"/>
+        <result column="notify_pg_url" jdbcType="VARCHAR" property="notifyPgUrl"/>
+        <result column="notify_bg_url" jdbcType="VARCHAR" property="notifyBgUrl"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="merchant_name" jdbcType="VARCHAR" property="merchantName"/>
+        <result column="merchant_cust_no" jdbcType="BIGINT" property="merchantCustNo"/>
+        <result column="merchant_account_no" jdbcType="BIGINT" property="merchantAccountNo"/>
+        <result column="merchant_fee" jdbcType="BIGINT" property="merchantFee"/>
+        <result column="sub_merchant_no" jdbcType="BIGINT" property="subMerchantNo"/>
+        <result column="sub_merchant_cust_no" jdbcType="BIGINT" property="subMerchantCustNo"/>
+        <result column="sub_merchant_account_no" jdbcType="BIGINT" property="subMerchantAccountNo"/>
+        <result column="sub_merchant_fee" jdbcType="BIGINT" property="subMerchantFee"/>
+        <result column="consumer_fee" jdbcType="BIGINT" property="consumerFee"/>
+        <result column="settlement_amount" jdbcType="BIGINT" property="settlementAmount"/>
+        <result column="account_trans_id" jdbcType="VARCHAR" property="accountTransId"/>
+        <result column="account_trans_time" jdbcType="TIMESTAMP" property="accountTransTime"/>
+        <result column="account_date" jdbcType="INTEGER" property="accountDate"/>
+        <result column="undo_account_trans_id" jdbcType="VARCHAR" property="undoAccountTransId"/>
+        <result column="undo_account_trans_time" jdbcType="TIMESTAMP" property="undoAccountTransTime"/>
+        <result column="undo_account_date" jdbcType="INTEGER" property="undoAccountDate"/>
+        <result column="pay_model" jdbcType="TINYINT" property="payModel"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="pay_id" jdbcType="BIGINT" property="payId"/>
+        <result column="pay_route_info" jdbcType="VARCHAR" property="payRouteInfo"/>
+        <result column="pay_result_code" jdbcType="VARCHAR" property="payResultCode"/>
+        <result column="pay_result_note" jdbcType="VARCHAR" property="payResultNote"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="notify_state" jdbcType="TINYINT" property="notifyState"/>
+        <result column="check_state" jdbcType="TINYINT" property="checkState"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT
+            t.id,
+            t.trans_id,
+            t.trans_date,
+            t.trans_type,
+            t.order_id,
+            t.order_date,
+            t.order_note,
+            t.order_amount,
+            t.order_domain,
+            t.order_ip,
+            t.order_device_info,
+            t.order_mcc,
+            t.order_city,
+            t.order_expiry_time,
+            t.notify_pg_url,
+            t.notify_bg_url,
+            t.merchant_no,
+            t.merchant_name,
+            t.merchant_cust_no,
+            t.merchant_account_no,
+            t.merchant_fee,
+            t.sub_merchant_no,
+            t.sub_merchant_cust_no,
+            t.sub_merchant_account_no,
+            t.sub_merchant_fee,
+            t.consumer_fee,
+            t.settlement_amount,
+            t.account_trans_id,
+            t.account_trans_time,
+            t.account_date,
+            t.undo_account_trans_id,
+            t.undo_account_trans_time,
+            t.undo_account_date,
+            t.pay_model,
+            t.pay_type,
+            t.pay_id,
+            t.pay_route_info,
+            t.pay_result_code,
+            t.pay_result_note,
+            t.state,
+            t.notify_state,
+            t.check_state,
+            t.create_time,
+            t.update_time,
+            1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM trans_bill t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+    <update id="createBillByDate" parameterType="String">
+        CREATE TABLE If Not Exists  `trans_bill_${date}` (
+          id bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+          trans_id varchar(20) NOT NULL COMMENT '交易流水号',
+          trans_date int unsigned NOT NULL COMMENT '交易日期',
+          trans_type tinyint unsigned NOT NULL COMMENT '交易类型',
+          order_id varchar(32) NOT NULL COMMENT '订单号,商户传入当日唯一',
+          order_date int unsigned NOT NULL COMMENT '订单日期,商户传入',
+          order_note varchar(100) NOT NULL COMMENT '订单说明',
+          order_amount bigint unsigned NOT NULL COMMENT '订单金额',
+          order_domain varchar(60) NOT NULL DEFAULT '' COMMENT '域名',
+          order_ip varchar(30) NOT NULL COMMENT '商户端IP',
+          order_device_info json NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '设备信息',
+          order_mcc int unsigned NOT NULL DEFAULT '0' COMMENT '行业类别',
+          order_city int unsigned NOT NULL DEFAULT '0' COMMENT '城市代码',
+          order_expiry_time datetime NULL DEFAULT NULL COMMENT '未支付失效时间',
+          notify_pg_url varchar(200) NOT NULL DEFAULT '' COMMENT '页面通知地址',
+          notify_bg_url varchar(200) NOT NULL DEFAULT '' COMMENT '后台通知地址',
+
+          merchant_no bigint unsigned NOT NULL COMMENT '商户号',
+          merchant_name varchar(128) NOT NULL DEFAULT '' COMMENT '商户名',
+          merchant_cust_no bigint unsigned NOT NULL DEFAULT '0' COMMENT '商户客户号',
+          merchant_account_no bigint unsigned NOT NULL DEFAULT '0' COMMENT '商户账户号',
+          merchant_fee bigint unsigned NOT NULL DEFAULT '0' COMMENT '商户手续费',
+          sub_merchant_no bigint unsigned NOT NULL DEFAULT '0' COMMENT '子商户号',
+          sub_merchant_cust_no bigint unsigned NOT NULL DEFAULT '0' COMMENT '子商户客户号',
+          sub_merchant_account_no bigint unsigned NOT NULL DEFAULT '0' COMMENT '子商户账户号',
+          sub_merchant_fee bigint unsigned NOT NULL DEFAULT '0' COMMENT '子商户手续费',
+          consumer_fee bigint unsigned NOT NULL DEFAULT '0' COMMENT '消费者手续费',
+          settlement_amount bigint unsigned NOT NULL DEFAULT '0' COMMENT '结算金额',
+
+          account_trans_id varchar(100) NOT NULL DEFAULT '' COMMENT '记账流水号,一笔交易对应多笔明细则用,分隔',
+          account_trans_time datetime NULL DEFAULT NULL COMMENT '账务记账时间',
+          account_date int unsigned NOT NULL DEFAULT '0' COMMENT '会计日期',
+          undo_account_trans_id varchar(100) NOT NULL DEFAULT '' COMMENT '冲正记账流水号,一笔交易对应多笔明细则用,分隔',
+          undo_account_trans_time datetime NULL DEFAULT NULL COMMENT '冲正记账时间',
+          undo_account_date int unsigned NOT NULL DEFAULT '0' COMMENT '冲正会计日期',
+
+          pay_model tinyint unsigned NOT NULL COMMENT '支付模式',
+          pay_type tinyint unsigned NOT NULL COMMENT '支付类型',
+          pay_id bigint unsigned NOT NULL DEFAULT '0' COMMENT '支付流水号,收银台有多笔只存最后一笔',
+          pay_route_info json NOT NULL DEFAULT (JSON_OBJECT())  COMMENT '路由扩展数据',
+          pay_result_code varchar(20) NOT NULL DEFAULT '' COMMENT '支付网关返回码',
+          pay_result_note varchar(100) NOT NULL DEFAULT '' COMMENT '支付网关备注',
+
+          state tinyint unsigned NOT NULL COMMENT '交易状态,0交易成功1待发起2已发起3超时订单关闭4已受理5交易失败6交易成功(异步入账中)7交易超时8实名认证失败9实名认证成功10支付待确认',
+          notify_state tinyint unsigned NOT NULL COMMENT '通知状态,0通知成功1待发送2通知失败3非法通知地址4黑名单限制',
+          check_state tinyint unsigned NOT NULL  COMMENT '对账状态,0-平账;1-不平账;2-未对账',
+          create_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+          update_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+          PRIMARY KEY (id),
+          UNIQUE KEY uk_trans_id (trans_id),
+          UNIQUE KEY uk_order_id (merchant_no,order_id,order_date),
+          KEY idx_order_date (order_date,state),
+          KEY idx_update_time (update_time,state)
+          ) ENGINE=InnoDB COMMENT='交易订单';
+    </update>
+</mapper>

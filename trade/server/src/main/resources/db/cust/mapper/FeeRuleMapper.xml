@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.cust.mapper.FeeRuleMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.cust.model.FeeRule">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="fee_rule" jdbcType="VARCHAR" property="feeRule"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="bank_type" jdbcType="VARCHAR" property="bankType"/>
+        <result column="bank_account_type" jdbcType="TINYINT" property="bankAccountType"/>
+        <result column="fee_type" jdbcType="TINYINT" property="feeType"/>
+        <result column="fee_rate" jdbcType="BIGINT" property="feeRate"/>
+        <result column="fix_fee" jdbcType="BIGINT" property="fixFee"/>
+        <result column="min_fee" jdbcType="BIGINT" property="minFee"/>
+        <result column="fee_segment_rule" jdbcType="VARCHAR" property="feeSegmentRule"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT
+            t.id,
+            t.fee_rule,
+            t.channel_no,
+            t.pay_type,
+            t.bank_type,
+            t.bank_account_type,
+            t.fee_type,
+            t.fee_rate,
+            t.fix_fee,
+            t.min_fee,
+            t.fee_segment_rule,
+            t.state,
+            t.create_time,
+            t.update_time,
+            1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM fee_rule t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+    
+    <select id="getFeeRule" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        from fee_rule t where t.fee_rule = #{feeRule} and t.state=0
+<!--     <where>
+               t.fee_rule = #{feeRule} and t.state=0
+             <choose>
+                   <when test="payType != null">
+                       AND (t.pay_type=0  OR t.pay_type=#{payType} )
+                   </when>
+                   <otherwise>
+                       AND t.pay_type=0
+                   </otherwise>
+               </choose>
+               <choose>
+                   <when test="channelNo != null ">
+                       AND (t.channel_no =0  OR t.channel_no =#{channelNo} )
+                   </when>
+                   <otherwise>
+                       AND t.channel_no=0
+                   </otherwise>
+               </choose>
+               <choose>
+                   <when test="bankType != null and bankType.trim() != ''">
+                       AND (t.bank_type=0 OR t.bank_type=#{bankType} )
+                   </when>
+                   <otherwise>
+                       AND t.bank_type=0
+                   </otherwise>
+               </choose>
+               <choose>
+                   <when test="bankAccountType != null ">
+                       AND (t.bank_account_type=0  OR t.bank_account_type=#{bankAccountType} )
+                   </when>
+                   <otherwise>
+                       AND t.bank_account_type=0
+                   </otherwise>
+               </choose>
+           </where>
+           -->
+        order by t.pay_type desc,t.channel_no desc,t.bank_type desc,t.bank_account_type desc
+    </select>
+
+</mapper>

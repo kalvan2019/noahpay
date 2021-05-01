@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.trade.mapper.RefundBillMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.trade.model.RefundBill">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="trans_id" jdbcType="VARCHAR" property="transId"/>
+        <result column="trans_date" jdbcType="INTEGER" property="transDate"/>
+        <result column="trans_type" jdbcType="TINYINT" property="transType"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_date" jdbcType="INTEGER" property="orderDate"/>
+        <result column="order_note" jdbcType="VARCHAR" property="orderNote"/>
+        <result column="order_amount" jdbcType="BIGINT" property="orderAmount"/>
+        <result column="order_domain" jdbcType="VARCHAR" property="orderDomain"/>
+        <result column="order_ip" jdbcType="VARCHAR" property="orderIp"/>
+        <result column="order_terminal_ip" jdbcType="VARCHAR" property="orderTerminalIp"/>
+        <result column="order_terminal_device" jdbcType="VARCHAR" property="orderTerminalDevice"/>
+        <result column="notify_bg_url" jdbcType="VARCHAR" property="notifyBgUrl"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="merchant_cust_no" jdbcType="BIGINT" property="merchantCustNo"/>
+        <result column="merchant_account_no" jdbcType="BIGINT" property="merchantAccountNo"/>
+        <result column="merchant_fee" jdbcType="BIGINT" property="merchantFee"/>
+        <result column="sub_merchant_no" jdbcType="BIGINT" property="subMerchantNo"/>
+        <result column="sub_merchant_cust_no" jdbcType="BIGINT" property="subMerchantCustNo"/>
+        <result column="sub_merchant_account_no" jdbcType="BIGINT" property="subMerchantAccountNo"/>
+        <result column="sub_merchant_fee" jdbcType="BIGINT" property="subMerchantFee"/>
+        <result column="consumer_fee" jdbcType="BIGINT" property="consumerFee"/>
+        <result column="account_trans_id" jdbcType="VARCHAR" property="accountTransId"/>
+        <result column="account_trans_time" jdbcType="TIMESTAMP" property="accountTransTime"/>
+        <result column="account_date" jdbcType="INTEGER" property="accountDate"/>
+        <result column="undo_account_trans_id" jdbcType="VARCHAR" property="undoAccountTransId"/>
+        <result column="undo_account_trans_time" jdbcType="TIMESTAMP" property="undoAccountTransTime"/>
+        <result column="undo_account_date" jdbcType="INTEGER" property="undoAccountDate"/>
+        <result column="bank_account_no" jdbcType="VARCHAR" property="bankAccountNo"/>
+        <result column="bank_account_name" jdbcType="VARCHAR" property="bankAccountName"/>
+        <result column="bank_account_type" jdbcType="TINYINT" property="bankAccountType"/>
+        <result column="bank_type" jdbcType="VARCHAR" property="bankType"/>
+        <result column="bank_name" jdbcType="VARCHAR" property="bankName"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="pay_result_code" jdbcType="VARCHAR" property="payResultCode"/>
+        <result column="pay_result_note" jdbcType="VARCHAR" property="payResultNote"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="channel_send_sn" jdbcType="VARCHAR" property="channelSendSn"/>
+        <result column="channel_send_time" jdbcType="TIMESTAMP" property="channelSendTime"/>
+        <result column="channel_send_ext" jdbcType="VARCHAR" property="channelSendExt"/>
+        <result column="channel_merchant_no" jdbcType="VARCHAR" property="channelMerchantNo"/>
+        <result column="channel_merchant_name" jdbcType="VARCHAR" property="channelMerchantName"/>
+        <result column="channel_sub_merchant_no" jdbcType="VARCHAR" property="channelSubMerchantNo"/>
+        <result column="channel_amount" jdbcType="BIGINT" property="channelAmount"/>
+        <result column="channel_account_date" jdbcType="INTEGER" property="channelAccountDate"/>
+        <result column="channel_recv_sn" jdbcType="VARCHAR" property="channelRecvSn"/>
+        <result column="channel_recv_time" jdbcType="TIMESTAMP" property="channelRecvTime"/>
+        <result column="channel_recv_ext" jdbcType="VARCHAR" property="channelRecvExt"/>
+        <result column="channel_return_code" jdbcType="VARCHAR" property="channelReturnCode"/>
+        <result column="channel_result_note" jdbcType="VARCHAR" property="channelResultNote"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="notify_state" jdbcType="TINYINT" property="notifyState"/>
+        <result column="check_state" jdbcType="TINYINT" property="checkState"/>
+        <result column="org_trans_id" jdbcType="VARCHAR" property="orgTransId"/>
+        <result column="org_trans_date" jdbcType="INTEGER" property="orgTransDate"/>
+        <result column="org_trans_type" jdbcType="TINYINT" property="orgTransType"/>
+        <result column="org_order_id" jdbcType="VARCHAR" property="orgOrderId"/>
+        <result column="org_order_date" jdbcType="INTEGER" property="orgOrderDate"/>
+        <result column="org_order_amount" jdbcType="BIGINT" property="orgOrderAmount"/>
+        <result column="org_account_date" jdbcType="INTEGER" property="orgAccountDate"/>
+        <result column="org_pay_type" jdbcType="TINYINT" property="orgPayType"/>
+        <result column="org_channel_send_sn" jdbcType="VARCHAR" property="orgChannelSendSn"/>
+        <result column="org_channel_recv_sn" jdbcType="VARCHAR" property="orgChannelRecvSn"/>
+        <result column="org_channel_amount" jdbcType="BIGINT" property="orgChannelAmount"/>
+        <result column="org_channel_send_time" jdbcType="TIMESTAMP" property="orgChannelSendTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.trans_id
+             , t.trans_date
+             , t.trans_type
+             , t.order_id
+             , t.order_date
+             , t.order_note
+             , t.order_amount
+             , t.order_domain
+             , t.order_ip
+             , t.order_terminal_ip
+             , t.order_terminal_device
+             , t.notify_bg_url
+             , t.merchant_no
+             , t.bank_account_no
+             , t.bank_account_name
+             , t.bank_account_type
+             , t.bank_type
+             , t.bank_name
+             , t.pay_type
+             , t.pay_result_code
+             , t.pay_result_note
+             , t.channel_no
+             , t.channel_send_sn
+             , t.channel_send_time
+             , t.channel_send_ext
+             , t.channel_merchant_no
+             , t.channel_merchant_name
+             , t.channel_sub_merchant_no
+             , t.channel_amount
+             , t.channel_account_date
+             , t.channel_recv_sn
+             , t.channel_recv_time
+             , t.channel_recv_ext
+             , t.channel_return_code
+             , t.channel_result_note
+             , t.state
+             , t.notify_state
+             , t.check_state
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM refund_bill t
+        WHERE
+        <if test="params.transId != null and params.transId.trim() != ''">
+            t.trans_id = #{params.transId} AND
+        </if>
+        <if test="params.transDate != null and params.transDate.trim() != ''">
+            t.trans_date = #{params.transDate} AND
+        </if>
+        <if test="params.transType != null and params.transType.trim() != ''">
+            t.trans_type = #{params.transType} AND
+        </if>
+        <if test="params.orderId != null and params.orderId.trim() != ''">
+            t.order_id = #{params.orderId} AND
+        </if>
+        <if test="params.orderDate != null and params.orderDate.trim() != ''">
+            t.order_date = #{params.orderDate} AND
+        </if>
+        <if test="params.merchantNo != null and params.merchantNo.trim() != ''">
+            t.merchant_no = #{params.merchantNo} AND
+        </if>
+        <if test="params.channelNo != null and params.channelNo.trim() != ''">
+            t.channel_no = #{params.channelNo} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

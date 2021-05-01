@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.risk.mapper.ConsumerTransSumMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.risk.model.ConsumerTransSum">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="trans_date" jdbcType="INTEGER" property="transDate"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="trans_type" jdbcType="TINYINT" property="transType"/>
+        <result column="bank_account_no" jdbcType="VARCHAR" property="bankAccountNo"/>
+        <result column="certificate_no" jdbcType="VARCHAR" property="certificateNo"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="day_use_number" jdbcType="BIGINT" property="dayUseNumber"/>
+        <result column="day_use_amount" jdbcType="BIGINT" property="dayUseAmount"/>
+        <result column="month_use_number" jdbcType="BIGINT" property="monthUseNumber"/>
+        <result column="month_use_amount" jdbcType="BIGINT" property="monthUseAmount"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id,
+               t.trans_date,
+               t.merchant_no,
+               t.trans_type,
+               t.bank_account_no,
+               t.certificate_no,
+               t.mobile,
+               t.day_use_number,
+               t.day_use_amount,
+               t.month_use_number,
+               t.month_use_amount,
+               t.create_time,
+               t.update_time,
+               1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM consumer_trans_sum t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

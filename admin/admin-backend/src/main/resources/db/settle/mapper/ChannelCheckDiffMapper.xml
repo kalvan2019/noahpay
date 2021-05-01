@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.settle.mapper.ChannelCheckDiffMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.settle.model.ChannelCheckDiff">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_amount" jdbcType="BIGINT" property="orderAmount"/>
+        <result column="order_fee" jdbcType="BIGINT" property="orderFee"/>
+        <result column="trans_id" jdbcType="VARCHAR" property="transId"/>
+        <result column="trans_date" jdbcType="INTEGER" property="transDate"/>
+        <result column="check_date" jdbcType="INTEGER" property="checkDate"/>
+        <result column="trans_type" jdbcType="TINYINT" property="transType"/>
+        <result column="account_no" jdbcType="BIGINT" property="accountNo"/>
+        <result column="channel_send_sn" jdbcType="VARCHAR" property="channelSendSn"/>
+        <result column="channel_recv_sn" jdbcType="VARCHAR" property="channelRecvSn"/>
+        <result column="channel_send_amount" jdbcType="BIGINT" property="channelSendAmount"/>
+        <result column="channel_recv_amount" jdbcType="BIGINT" property="channelRecvAmount"/>
+        <result column="diff_state" jdbcType="TINYINT" property="diffState"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.order_id
+             , t.order_amount
+             , t.order_fee
+             , t.trans_id
+             , t.trans_date
+             , t.check_date
+             , t.trans_type
+             , t.account_no
+             , t.channel_send_sn
+             , t.channel_recv_sn
+             , t.channel_send_amount
+             , t.channel_recv_amount
+             , t.diff_state
+             , t.remark
+             , t.create_time
+             , t.update_time
+             , t.channel_no
+    </sql>
+
+    <sql id="whereCondition">
+        FROM channel_check_diff t
+        WHERE
+        <if test="params.orderId != null and params.orderId.trim() != ''">
+            t.order_id = #{params.orderId} AND
+        </if>
+        <if test="params.transId != null and params.transId.trim() != ''">
+            t.trans_id = #{params.transId} AND
+        </if>
+        <if test="params.transDate != null and params.transDate.trim() != ''">
+            t.trans_date = #{params.transDate} AND
+        </if>
+        <if test="params.checkDate != null and params.checkDate.trim() != ''">
+            t.check_date = #{params.checkDate} AND
+        </if>
+        <if test="params.transType != null and params.transType.trim() != ''">
+            t.trans_type = #{params.transType} AND
+        </if>
+        <if test="params.accountNo != null and params.accountNo.trim() != ''">
+            t.account_no = #{params.accountNo} AND
+        </if>
+        <if test="params.diffState != null and params.diffState.trim() != ''">
+            t.diff_state = #{params.diffState} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

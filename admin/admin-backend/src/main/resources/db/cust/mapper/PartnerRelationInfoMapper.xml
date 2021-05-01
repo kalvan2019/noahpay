@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.cust.mapper.PartnerRelationInfoMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.cust.model.PartnerRelationInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="partner_no" jdbcType="BIGINT" property="partnerNo"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="fee_rate" jdbcType="BIGINT" property="feeRate"/>
+        <result column="withdraw_fee" jdbcType="BIGINT" property="withdrawFee"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.partner_no
+             , t.merchant_no
+             , t.fee_rate
+             , t.withdraw_fee
+             , t.state
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM partner_relation_info t
+        WHERE
+        <if test="params.partnerNo != null and params.partnerNo.trim() != ''">
+            t.partner_no = #{params.partnerNo} AND
+        </if>
+        <if test="params.merchantNo != null and params.merchantNo.trim() != ''">
+            t.merchant_no = #{params.merchantNo} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        <if test="params.createTimeBegin != null and params.createTimeBegin.trim() != ''">
+            t.create_time BETWEEN #{params.createTimeBegin} AND #{params.createTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

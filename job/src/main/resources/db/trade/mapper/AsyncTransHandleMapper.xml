@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.trade.mapper.AsyncTransHandleMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.trade.model.AsyncTransHandle">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="trans_id" jdbcType="VARCHAR" property="transId"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="result_code" jdbcType="VARCHAR" property="resultCode"/>
+        <result column="result_note" jdbcType="VARCHAR" property="resultNote"/>
+        <result column="deal_times" jdbcType="INTEGER" property="dealTimes"/>
+        <result column="priority" jdbcType="TINYINT" property="priority"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT
+            t.id,
+            t.trans_id,
+            t.pay_type,
+            t.result_code,
+            t.result_note,
+            t.deal_times,
+            t.priority,
+            t.state,
+            t.create_time,
+            t.update_time,
+            1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM async_trans_handle t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+    <select id="queryAsyncHandle" resultMap="BaseResultMap">
+        SELECT
+        t.id,
+        t.trans_id
+        FROM  async_trans_handle t  WHERE
+        -- 只处理等待处理状态
+        t.state =1 AND t.deal_times=0  order by t.priority,t.id  limit #{queryRowNum}
+    </select>
+
+    <update id="updateStateProcess">
+        update async_trans_handle set state=2 ,deal_times=deal_times+1 where id=#{id} and state=1
+    </update>
+    <update id="updateStateEnd">
+        update async_trans_handle set
+        state=#{state},
+        result_code=#{resultCode},
+        result_note=#{resultNote}
+        where id=#{id} and state = 2
+    </update>
+    <delete id="cleanHistory">
+        delete from async_trans_handle
+        where current_timestamp &gt;  ADDDATE(create_time,interval (0) DAY)
+        AND state IN (0,4) limit 10000
+    </delete>
+</mapper>

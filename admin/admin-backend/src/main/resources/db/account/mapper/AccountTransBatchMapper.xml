@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.account.mapper.AccountTransBatchMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.account.model.AccountTransBatch">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="account_trans_id" jdbcType="VARCHAR" property="accountTransId"/>
+        <result column="trans_type" jdbcType="TINYINT" property="transType"/>
+        <result column="undo_flag" jdbcType="TINYINT" property="undoFlag"/>
+        <result column="account_date" jdbcType="INTEGER" property="accountDate"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.account_trans_id
+             , t.trans_type
+             , t.undo_flag
+             , t.account_date
+    </sql>
+
+    <sql id="whereCondition">
+        FROM account_trans_batch t
+        WHERE
+        <if test="params.accountTransId != null and params.accountTransId.trim() != ''">
+            t.account_trans_id = #{params.accountTransId} AND
+        </if>
+        <if test="params.transType != null and params.transType.trim() != ''">
+            t.trans_type = #{params.transType} AND
+        </if>
+        <if test="params.undoFlag != null and params.undoFlag.trim() != ''">
+            t.undo_flag = #{params.undoFlag} AND
+        </if>
+        <if test="params.accountDateBegin != null and params.accountDateBegin.trim() != ''">
+            t.account_date BETWEEN #{params.accountDateBegin} AND #{params.accountDateEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

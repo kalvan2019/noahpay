@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.channel.mapper.ChannelMerchantPoolMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.channel.model.ChannelMerchantPool">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="channel_merchant_no" jdbcType="VARCHAR" property="channelMerchantNo"/>
+        <result column="channel_sub_merchant_no" jdbcType="VARCHAR" property="channelSubMerchantNo"/>
+        <result column="channel_sub_merchant_name" jdbcType="VARCHAR" property="channelSubMerchantName"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="city" jdbcType="INTEGER" property="city"/>
+        <result column="mcc" jdbcType="INTEGER" property="mcc"/>
+        <result column="begin_time" jdbcType="VARCHAR" property="beginTime"/>
+        <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
+        <result column="limit_min_amount" jdbcType="BIGINT" property="limitMinAmount"/>
+        <result column="limit_max_amount" jdbcType="BIGINT" property="limitMaxAmount"/>
+        <result column="day_use_amount" jdbcType="BIGINT" property="dayUseAmount"/>
+        <result column="day_limit_amount" jdbcType="BIGINT" property="dayLimitAmount"/>
+        <result column="month_use_amount" jdbcType="BIGINT" property="monthUseAmount"/>
+        <result column="month_limit_amount" jdbcType="BIGINT" property="monthLimitAmount"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id,
+               t.channel_no,
+               t.channel_merchant_no,
+               t.channel_sub_merchant_no,
+               t.channel_sub_merchant_name,
+               t.merchant_no,
+               t.city,
+               t.mcc,
+               t.begin_time,
+               t.end_time,
+               t.limit_min_amount,
+               t.limit_max_amount,
+               t.day_use_amount,
+               t.day_limit_amount,
+               t.month_use_amount,
+               t.month_limit_amount,
+               t.state,
+               t.remark,
+               t.create_time,
+               t.update_time,
+               1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM channel_merchant_pool t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+    <select id="queryChannelMerchantPool" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        from channel_merchant_pool t where
+        1=1
+        <if test="poolRouteList != null and poolRouteList.size()>0 ">
+            and
+            <foreach collection="poolRouteList" item="channelNo" index="index" open="(" close=")" separator="or">
+                t.channel_no=#{channelNo}
+            </foreach>
+        </if>
+        and t.state = 0
+        and t.merchant_no=#{merchantNo}
+        <if test="channelMerchantNo != null  and channelMerchantNo != ''">
+            and t.channel_merchant_no = #{channelMerchantNo}
+        </if>
+        <if test="city != null">
+            and t.city = #{city}
+        </if>
+        <if test="mcc != null">
+            and t.mcc = #{mcc}
+        </if>
+        and t.begin_time &lt;= date_format(current_timestamp() ,'%H%i%S')
+        and t.end_time &gt;= date_format(current_timestamp() ,'%H%i%S')
+        <if test="orderAmount != null ">
+            and t.day_use_amount + #{orderAmount} &lt;= t.day_limit_amount
+            and t.month_use_amount + #{orderAmount} &lt;= t.month_limit_amount
+            and #{orderAmount} &gt;= t.limit_min_amount
+            and #{orderAmount} &lt;= t.limit_max_amount
+        </if>
+        order by t.update_time limit 30
+    </select>
+
+    <update id="updateChannelMerchantUse">
+        update channel_merchant_pool
+        set day_use_amount=day_use_amount + #{channelMerchantPool.dayUseAmount},
+            month_use_amount=month_use_amount + #{channelMerchantPool.dayUseAmount}
+        where channel_no = #{channelMerchantPool.channelNo }
+          and channel_merchant_no = #{channelMerchantPool.channelMerchantNo }
+          and channel_sub_merchant_no = #{channelMerchantPool.channelSubMerchantNo };
+    </update>
+    <update id="resetChannelMerchantUse">
+        update channel_merchant_pool set day_use_amount=0
+        <if test="resetMonthUse">
+            , month_use_amount =0
+        </if>
+        where day_use_amount >0
+        <if test="resetMonthUse">
+            or month_use_amount>0
+        </if>
+        order by month_use_amount limit 100
+    </update>
+</mapper>

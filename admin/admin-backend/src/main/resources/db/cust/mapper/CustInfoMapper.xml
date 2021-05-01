@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.cust.mapper.CustInfoMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.cust.model.CustInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="cust_no" jdbcType="BIGINT" property="custNo"/>
+        <result column="certificate_no" jdbcType="VARCHAR" property="certificateNo"/>
+        <result column="certificate_name" jdbcType="VARCHAR" property="certificateName"/>
+        <result column="certificate_type" jdbcType="TINYINT" property="certificateType"/>
+        <result column="certificate_address" jdbcType="VARCHAR" property="certificateAddress"/>
+        <result column="certificate_expiry" jdbcType="INTEGER" property="certificateExpiry"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="close_time" jdbcType="TIMESTAMP" property="closeTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.cust_no
+             , t.certificate_no
+             , t.certificate_name
+             , t.certificate_type
+             , t.certificate_address
+             , t.certificate_expiry
+             , t.email
+             , t.mobile
+             , t.address
+             , t.state
+             , t.close_time
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM cust_info t
+        WHERE
+        <if test="params.custNo != null and params.custNo.trim() != ''">
+            t.cust_no = #{params.custNo} AND
+        </if>
+        <if test="params.certificateNo != null and params.certificateNo.trim() != ''">
+            t.certificate_no = #{params.certificateNo} AND
+        </if>
+        <if test="params.certificateName != null and params.certificateName.trim() != ''">
+            t.certificate_name = #{params.certificateName} AND
+        </if>
+        <if test="params.certificateType != null and params.certificateType.trim() != ''">
+            t.certificate_type = #{params.certificateType} AND
+        </if>
+        <if test="params.email != null and params.email.trim() != ''">
+            t.email = #{params.email} AND
+        </if>
+        <if test="params.mobile != null and params.mobile.trim() != ''">
+            t.mobile = #{params.mobile} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

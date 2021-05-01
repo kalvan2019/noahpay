@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.trade.mapper.AsyncEventHandleMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.trade.model.AsyncEventHandle">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="trans_id" jdbcType="VARCHAR" property="transId"/>
+        <result column="pay_id" jdbcType="BIGINT" property="payId"/>
+        <result column="trans_date" jdbcType="INTEGER" property="transDate"/>
+        <result column="trans_type" jdbcType="TINYINT" property="transType"/>
+        <result column="account_no" jdbcType="BIGINT" property="accountNo"/>
+        <result column="event_type" jdbcType="INTEGER" property="eventType"/>
+        <result column="event_content" jdbcType="VARCHAR" property="eventContent"/>
+        <result column="strategy_type" jdbcType="TINYINT" property="strategyType"/>
+        <result column="result_code" jdbcType="VARCHAR" property="resultCode"/>
+        <result column="result_note" jdbcType="VARCHAR" property="resultNote"/>
+        <result column="deal_times" jdbcType="INTEGER" property="dealTimes"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.trans_id
+             , t.pay_id
+             , t.trans_date
+             , t.trans_type
+             , t.account_no
+             , t.event_type
+             , t.event_content
+             , t.strategy_type
+             , t.result_code
+             , t.result_note
+             , t.deal_times
+             , t.state
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM async_event_handle t
+        WHERE
+        <if test="params.transId != null and params.transId.trim() != ''">
+            t.trans_id = #{params.transId} AND
+        </if>
+        <if test="params.payId != null and params.payId.trim() != ''">
+            t.pay_id = #{params.payId} AND
+        </if>
+        <if test="params.transDate != null and params.transDate.trim() != ''">
+            t.trans_date = #{params.transDate} AND
+        </if>
+        <if test="params.transType != null and params.transType.trim() != ''">
+            t.trans_type = #{params.transType} AND
+        </if>
+        <if test="params.accountNo != null and params.accountNo.trim() != ''">
+            t.account_no = #{params.accountNo} AND
+        </if>
+        <if test="params.dealTimesBegin != null and params.dealTimesBegin.trim() != ''">
+            t.deal_times BETWEEN #{params.dealTimesBegin} AND #{params.dealTimesEnd} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

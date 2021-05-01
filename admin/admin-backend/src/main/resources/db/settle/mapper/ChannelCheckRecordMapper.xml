@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.settle.mapper.ChannelCheckRecordMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.settle.model.ChannelCheckRecord">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="check_date" jdbcType="INTEGER" property="checkDate"/>
+        <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
+        <result column="file_type" jdbcType="TINYINT" property="fileType"/>
+        <result column="error_count" jdbcType="TINYINT" property="errorCount"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="note" jdbcType="VARCHAR" property="note"/>
+        <result column="check_support" jdbcType="TINYINT" property="checkSupport"/>
+        <result column="check_field" jdbcType="TINYINT" property="checkField"/>
+        <result column="check_time" jdbcType="INTEGER" property="checkTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.channel_no
+             , t.check_date
+             , t.file_path
+             , t.file_type
+             , t.error_count
+             , t.state
+             , t.note
+             , t.check_support
+             , t.check_field
+             , t.check_time
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM channel_check_record t
+        WHERE
+        <if test="params.channelNo != null and params.channelNo.trim() != ''">
+            t.channel_no = #{params.channelNo} AND
+        </if>
+        <if test="params.checkDate != null and params.checkDate.trim() != ''">
+            t.check_date = #{params.checkDate} AND
+        </if>
+        <if test="params.filePath != null and params.filePath.trim() != ''">
+            t.file_path = #{params.filePath} AND
+        </if>
+        <if test="params.fileType != null and params.fileType.trim() != ''">
+            t.file_type = #{params.fileType} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

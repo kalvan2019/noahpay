@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.channel.mapper.ChannelSupportBankMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.channel.model.ChannelSupportBank">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="limit_min_amount" jdbcType="BIGINT" property="limitMinAmount"/>
+        <result column="limit_max_amount" jdbcType="BIGINT" property="limitMaxAmount"/>
+        <result column="begin_time" jdbcType="VARCHAR" property="beginTime"/>
+        <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
+        <result column="bank_account_type" jdbcType="TINYINT" property="bankAccountType"/>
+        <result column="bank_type_group" jdbcType="VARCHAR" property="bankTypeGroup"/>
+        <result column="bank_city_group" jdbcType="VARCHAR" property="bankCityGroup"/>
+        <result column="bank_support" jdbcType="TINYINT" property="bankSupport"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+
+        <result column="bank_type" jdbcType="VARCHAR" property="bankType"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id,
+               t.channel_no,
+               t.pay_type,
+               t.limit_min_amount,
+               t.limit_max_amount,
+               t.begin_time,
+               t.end_time,
+               t.bank_account_type,
+               t.bank_type_group,
+               t.bank_city_group,
+               t.bank_support,
+               t.remark,
+               t.state,
+               t.create_time,
+               t.update_time,
+               1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM channel_support_bank t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+    <select id="querySupportBank" resultMap="BaseResultMap">
+        select b.channel_no,
+               b.pay_type,
+               b.limit_min_amount,
+               b.limit_max_amount,
+               b.begin_time,
+               b.end_time,
+               b.bank_account_type,
+               b.bank_support,
+               bt.bank_type
+        from channel_support_bank b
+                 inner join channel_support_bank_type_group bt on b.bank_type_group = bt.bank_type_group
+        where b.channel_no = #{channelNo}
+          and b.pay_type = #{payType}
+          and b.state = 0
+        order by b.pay_type desc, b.bank_account_type desc
+    </select>
+
+</mapper>

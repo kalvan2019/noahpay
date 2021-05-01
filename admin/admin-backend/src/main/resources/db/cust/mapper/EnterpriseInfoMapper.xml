@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.cust.mapper.EnterpriseInfoMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.cust.model.EnterpriseInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="business_license_no" jdbcType="VARCHAR" property="businessLicenseNo"/>
+        <result column="business_scope" jdbcType="VARCHAR" property="businessScope"/>
+        <result column="business_amount" jdbcType="BIGINT" property="businessAmount"/>
+        <result column="business_license_expiry" jdbcType="INTEGER" property="businessLicenseExpiry"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="company_address" jdbcType="VARCHAR" property="companyAddress"/>
+        <result column="industry" jdbcType="INTEGER" property="industry"/>
+        <result column="website" jdbcType="VARCHAR" property="website"/>
+        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="close_time" jdbcType="TIMESTAMP" property="closeTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.business_license_no
+             , t.business_scope
+             , t.business_amount
+             , t.business_license_expiry
+             , t.company_name
+             , t.company_address
+             , t.industry
+             , t.website
+             , t.telephone
+             , t.state
+             , t.close_time
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM enterprise_info t
+        WHERE
+        <if test="params.businessLicenseNo != null and params.businessLicenseNo.trim() != ''">
+            t.business_license_no = #{params.businessLicenseNo} AND
+        </if>
+        <if test="params.businessScope != null and params.businessScope.trim() != ''">
+            t.business_scope = #{params.businessScope} AND
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            t.state = #{params.state} AND
+        </if>
+        <if test="params.createTimeBegin != null and params.createTimeBegin.trim() != ''">
+            t.create_time BETWEEN #{params.createTimeBegin} AND #{params.createTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

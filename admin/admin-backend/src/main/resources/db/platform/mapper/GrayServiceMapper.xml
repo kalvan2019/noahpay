@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.platform.mapper.GrayServiceMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.platform.model.GrayService">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="service_id" jdbcType="VARCHAR" property="serviceId"/>
+        <result column="host" jdbcType="VARCHAR" property="host"/>
+        <result column="port" jdbcType="VARCHAR" property="port"/>
+        <result column="rule_name" jdbcType="VARCHAR" property="ruleName"/>
+        <result column="gray_tag" jdbcType="VARCHAR" property="grayTag"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+       <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT
+            t.id,
+            t.service_id,
+            t.host,
+            t.port,
+            t.rule_name,
+            t.gray_tag,
+            t.state,
+            t.create_time,
+            t.update_time,
+            1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM gray_service t
+        WHERE 1=1
+        <if test="params.serviceId != null and params.serviceId.trim() != ''">
+            AND t.service_id = #{params.serviceId}
+        </if>
+        <if test="params.host != null and params.host.trim() != ''">
+            AND t.host = #{params.host}
+        </if>
+        <if test="params.ruleName != null and params.ruleName.trim() != ''">
+            AND t.rule_name = #{params.ruleName}
+        </if>
+        <if test="params.grayTag != null and params.grayTag.trim() != ''">
+            AND t.gray_tag = #{params.grayTag}
+        </if>
+        <if test="params.state != null and params.state.trim() != ''">
+            AND t.state = #{params.state}
+        </if>
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

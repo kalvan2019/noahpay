@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.trade.mapper.AsyncEventHandleMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.trade.model.AsyncEventHandle">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="trans_id" jdbcType="VARCHAR" property="transId"/>
+        <result column="pay_id" jdbcType="BIGINT" property="payId"/>
+        <result column="trans_date" jdbcType="INTEGER" property="transDate"/>
+        <result column="trans_type" jdbcType="TINYINT" property="transType"/>
+        <result column="account_no" jdbcType="BIGINT" property="accountNo"/>
+        <result column="event_type" jdbcType="INTEGER" property="eventType"/>
+        <result column="event_content" jdbcType="VARCHAR" property="eventContent"/>
+        <result column="strategy_type" jdbcType="TINYINT" property="strategyType"/>
+        <result column="result_code" jdbcType="VARCHAR" property="resultCode"/>
+        <result column="result_note" jdbcType="VARCHAR" property="resultNote"/>
+        <result column="deal_times" jdbcType="INTEGER" property="dealTimes"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT
+            t.id,
+            t.trans_id,
+            t.pay_id,
+            t.trans_date,
+            t.trans_type,
+            t.account_no,
+            t.event_type,
+            t.event_content,
+            t.strategy_type,
+            t.result_code,
+            t.result_note,
+            t.deal_times,
+            t.state,
+            t.create_time,
+            t.update_time,
+            1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM async_event_handle t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+    <select id="queryAccountIn" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        FROM async_event_handle t WHERE 1=1
+        -- 入账
+        AND t.event_type =#{eventType}
+        -- 0.5秒 和次数3倍放大,最多做10次,12小时做完
+        AND (now()- t.update_time) > (0.5 * POWER( 3, t.deal_times) )
+        AND t.deal_times <![CDATA[ < ]]> 10
+        AND t.state IN (1,4)  limit #{queryRowNum}
+    </select>
+    <select id="queryAccountOutUndo" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        FROM async_event_handle t WHERE 1=1
+        -- 冲正
+        AND t.event_type =#{eventType}
+        -- 0.5秒 和次数3倍放大,最多做10次,12小时做完
+        AND (now()- t.update_time) > (0.5 * POWER( 3, t.deal_times) )
+        AND t.deal_times <![CDATA[ < ]]> 10
+        AND t.state IN (1,4) limit #{queryRowNum}
+    </select>
+    <select id="queryOvertime" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        FROM async_event_handle t WHERE 1=1
+        AND t.trans_type != 12
+        AND t.trans_type != 26
+        -- 超时;待验证支付类型10分钟开始查
+        AND (t.event_type IN (4,5) or (t.event_type=7 and (now()- t.create_time) > 600))
+        -- 0.5秒 和次数3倍放大,最多做10次,12小时做完
+        AND (now()- t.update_time) &gt;= (0.5 * POWER( 3, t.deal_times) )
+        AND t.deal_times <![CDATA[ < ]]> 10
+        AND t.state IN (1,4)
+        order by t.id limit #{queryRowNum}
+    </select>
+
+    <update id="updateStateProcess">
+        update async_event_handle set state=2 ,deal_times=deal_times+1 where id=#{id} and event_type=#{eventType}
+    </update>
+    <update id="updateStateProcessOver">
+        update async_event_handle set state=#{state}
+        <if test="resultCode != null  and resultCode != ''">
+            ,
+            result_code=#{resultCode}
+        </if>
+        <if test="resultNote != null  and resultNote != ''">
+            ,
+            result_note=#{resultNote}
+        </if>
+        where id=#{id} and event_type=#{eventType} and state = 2
+    </update>
+    <delete id="cleanHistory">
+        delete from async_event_handle
+        where current_timestamp &gt; ADDDATE(create_time,interval (0) DAY)
+        AND state IN (0,5) limit 10000
+    </delete>
+</mapper>

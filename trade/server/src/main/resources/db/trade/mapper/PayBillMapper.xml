@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.trade.mapper.PayBillMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.trade.model.PayBill">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="trans_id" jdbcType="VARCHAR" property="transId"/>
+        <result column="trans_type" jdbcType="TINYINT" property="transType"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_date" jdbcType="INTEGER" property="orderDate"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="attach" jdbcType="VARCHAR" property="attach"/>
+        <result column="amount" jdbcType="BIGINT" property="amount"/>
+        <result column="currency" jdbcType="VARCHAR" property="currency"/>
+        <result column="time_start" jdbcType="TIMESTAMP" property="timeStart"/>
+        <result column="time_expire" jdbcType="TIMESTAMP" property="timeExpire"/>
+        <result column="notify_url" jdbcType="VARCHAR" property="notifyUrl"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="merchant_name" jdbcType="VARCHAR" property="merchantName"/>
+        <result column="merchant_fee" jdbcType="BIGINT" property="merchantFee"/>
+        <result column="consumer_fee" jdbcType="BIGINT" property="consumerFee"/>
+        <result column="settlement_amount" jdbcType="BIGINT" property="settlementAmount"/>
+        <result column="payer_info" jdbcType="VARCHAR" property="payerInfo"/>
+        <result column="scene_info" jdbcType="VARCHAR" property="sceneInfo"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="channel_merchant_no" jdbcType="VARCHAR" property="channelMerchantNo"/>
+        <result column="channel_sub_merchant_no" jdbcType="VARCHAR" property="channelSubMerchantNo"/>
+        <result column="channel_amount" jdbcType="BIGINT" property="channelAmount"/>
+        <result column="channel_send_sn" jdbcType="VARCHAR" property="channelSendSn"/>
+        <result column="channel_send_time" jdbcType="TIMESTAMP" property="channelSendTime"/>
+        <result column="channel_recv_sn" jdbcType="VARCHAR" property="channelRecvSn"/>
+        <result column="channel_recv_time" jdbcType="TIMESTAMP" property="channelRecvTime"/>
+        <result column="channel_recv_ext" jdbcType="VARCHAR" property="channelRecvExt"/>
+        <result column="channel_prepay_id" jdbcType="VARCHAR" property="channelPrepayId"/>
+        <result column="channel_code_url" jdbcType="VARCHAR" property="channelCodeUrl"/>
+        <result column="channel_account_date" jdbcType="INTEGER" property="channelAccountDate"/>
+        <result column="channel_result_code" jdbcType="VARCHAR" property="channelResultCode"/>
+        <result column="channel_result_note" jdbcType="VARCHAR" property="channelResultNote"/>
+        <result column="pay_type" jdbcType="VARCHAR" property="payType"/>
+        <result column="pay_result_code" jdbcType="VARCHAR" property="payResultCode"/>
+        <result column="pay_result_note" jdbcType="VARCHAR" property="payResultNote"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="notify_state" jdbcType="TINYINT" property="notifyState"/>
+        <result column="check_state" jdbcType="TINYINT" property="checkState"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.trans_id
+             , t.trans_type
+             , t.order_id
+             , t.order_date
+             , t.description
+             , t.attach
+             , t.amount
+             , t.currency
+             , t.time_start
+             , t.time_expire
+             , t.notify_url
+             , t.merchant_no
+             , t.merchant_name
+             , t.merchant_fee
+             , t.consumer_fee
+             , t.settlement_amount
+             , t.payer_info
+             , t.scene_info
+             , t.channel_no
+             , t.channel_merchant_no
+             , t.channel_sub_merchant_no
+             , t.channel_amount
+             , t.channel_send_sn
+             , t.channel_send_time
+             , t.channel_recv_sn
+             , t.channel_recv_time
+             , t.channel_recv_ext
+             , t.channel_prepay_id
+             , t.channel_code_url
+             , t.channel_account_date
+             , t.channel_result_code
+             , t.channel_result_note
+             , t.pay_type
+             , t.pay_result_code
+             , t.pay_result_note
+             , t.state
+             , t.notify_state
+             , t.check_state
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM pay_bill t
+        WHERE
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+    <select id="queryByOrderId" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        FROM pay_bill t
+        WHERE t.merchant_no=#{merchantNo} AND t.order_date=#{orderDate} AND t.order_id=#{orderId}
+    </select>
+    <select id="queryCountByOrderId" resultType="java.lang.Integer">
+        SELECT count(*) FROM pay_bill t
+        WHERE  t.merchant_no=#{merchantNo} AND t.order_date=#{orderDate} AND t.order_id=#{orderId}
+    </select>
+
+    <update id="updateRoute">
+        update pay_bill t set
+        <if test="bill.channelMerchantNo != null and bill.channelMerchantNo.trim() != ''">
+            channel_merchant_no=#{bill.channelMerchantNo},
+        </if>
+        <if test="bill.channelSubMerchantNo != null and bill.channelSubMerchantNo.trim() != ''">
+            channel_sub_merchant_no=#{bill.channelSubMerchantNo},
+        </if>
+<!--
+        <if test="bill.channelMerchantName != null and bill.channelMerchantName.trim() != ''">
+            channel_merchant_name=#{bill.channelMerchantName},
+        </if>
+        <if test="bill.channelSubMerchantName != null and bill.channelSubMerchantName.trim() != ''">
+            channel_sub_merchant_name=#{channelSubMerchantName},
+        </if>
+        <if test="bill.mobile != null">
+            mobile=#{bill.mobile},
+        </if>
+        <if test="bill.channelCity != null and bill.channelCity.trim() != ''">
+            channel_city=#{bill.channelCity},
+        </if>
+        <if test="bill.channelMcc != null and bill.channelMcc.trim() != ''">
+            channel_mcc=#{bill.channelMcc},
+        </if>
+        <if test="bill.channelSendExt != null and bill.channelSendExt.trim() != ''">
+            channel_send_ext=#{bill.channelSendExt},
+        </if>
+        <if test="bill.bankProtocol != null and bill.bankProtocol.trim() != ''">
+            bank_protocol=#{bill.bankProtocol},
+        </if>
+-->
+        state=#{bill.state} ,
+        channel_no=#{bill.channelNo} ,
+        merchant_name=#{bill.merchantName}
+        where trans_id=#{bill.transId} and state=#{oldState}
+    </update>
+
+    <update id="updateFee">
+        update pay_bill t set
+        state=#{bill.state} ,
+        merchant_fee=#{bill.merchantFee},
+        consumer_fee=#{bill.consumerFee},
+        channel_amount=#{bill.channelAmount}
+        where trans_id=#{bill.transId}  and state=#{oldState}
+    </update>
+
+    <update id="updateSendChannel">
+        update pay_bill t set
+        state=#{bill.state} ,
+<!--
+        <if test="bill.channelBankAccountType != null and bill.channelBankAccountType.trim() != ''">
+            channel_bank_account_type=#{bill.channelBankAccountType},
+        </if>
+        <if test="bill.channelBankType != null and bill.channelBankType.trim() != ''">
+            channel_bank_type=#{bill.channelBankType},
+        </if>
+        <if test="bill.channelCertificateType != null and bill.channelCertificateType.trim() != ''">
+            channel_certificate_type=#{bill.channelCertificateType},
+        </if>
+        <if test="bill.channelCity != null and bill.channelCity.trim() != ''">
+            channel_city=#{bill.channelCity},
+        </if>
+        <if test="bill.channelMcc != null and bill.channelMcc.trim() != ''">
+            channel_mcc=#{bill.channelMcc},
+        </if>
+-->
+        channel_send_sn=#{bill.channelSendSn},
+        channel_send_time=#{bill.channelSendTime}
+       where trans_id=#{bill.transId} and state=#{oldState}
+    </update>
+
+    <update id="updateSendChannelOvertime">
+        update pay_bill t set
+        state=#{bill.state} ,
+        pay_result_code=#{bill.payResultCode},
+        pay_result_note=#{bill.payResultNote}
+        where trans_id=#{bill.transId}  and state !=0 and state !=16
+    </update>
+    <update id="updateChannelResponse">
+        update pay_bill t set
+        state=#{bill.state} ,
+        channel_account_date=#{bill.channelAccountDate},
+        channel_recv_sn=#{bill.channelRecvSn},
+        channel_recv_time=#{bill.channelRecvTime},
+        channel_result_code=#{bill.channelResultCode},
+        channel_result_note=#{bill.channelResultNote},
+        pay_result_code=#{bill.payResultCode},
+        pay_result_note=#{bill.payResultNote}
+        where trans_id=#{bill.transId} and id=#{bill.id} and state !=0 and state !=1
+    </update>
+    <update id="updateFail">
+        update pay_bill t set
+        state=#{bill.state} ,
+        pay_result_code=#{bill.payResultCode},
+        pay_result_note=#{bill.payResultNote}
+        where trans_id=#{bill.transId}  and state !=0 and state !=16
+    </update>
+
+    <update id="updatePayId">
+        update pay_bill t set  pay_id=#{bill.payId}  where trans_id=#{bill.transId}
+    </update>
+    <update id="updateAccountSuccess">
+        update pay_bill t set
+        state=#{bill.state} ,
+        account_trans_id=#{bill.accountTransId},
+        account_trans_time=#{bill.accountTransTime},
+        account_date=#{bill.accountDate}
+        where trans_id=#{bill.transId}  and state=#{oldState}
+    </update>
+    <update id="updateWaitAsync">
+        update pay_bill t set state=#{state}
+        where trans_id=#{transId}  and state =#{oldState}
+    </update>
+    <update id="updateInAsync">
+        update pay_bill t set state=#{state}
+        where trans_id=#{transId}  and state =#{oldState}
+    </update>
+    <update id="updateRefundIng">
+        update pay_bill t set state=#{state}
+        where trans_id=#{transId}  and state =#{oldState}
+    </update>
+    <update id="updateRefundReturn">
+        update pay_bill t set state=#{state}
+        where trans_id=#{transId}  and state =#{oldState}
+    </update>
+    <update id="updateRefundSuccess">
+        update pay_bill t set state=#{state}
+        where trans_id=#{transId}  and state =#{oldState}
+    </update>
+    <select id="queryBillByChannelSendSn" resultMap="BaseResultMap">
+        select trans_id,id FROM trans_pay_bill_${orderDate} t WHERE t.channel_no=#{channelNo} and t.channel_send_sn=#{channelSendSn}
+    </select>
+</mapper>

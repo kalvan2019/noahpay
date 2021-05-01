@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.channel.mapper.ChannelMultiMerchantMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.channel.model.ChannelMultiMerchant">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="channel_merchant_no" jdbcType="VARCHAR" property="channelMerchantNo"/>
+        <result column="channel_merchant_name" jdbcType="VARCHAR" property="channelMerchantName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id,
+               t.channel_no,
+               t.pay_type,
+               t.merchant_no,
+               t.channel_merchant_no,
+               t.channel_merchant_name,
+               t.remark,
+               t.create_time,
+               t.update_time,
+               1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM channel_multi_merchant t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+    <select id="queryChannelMultiMerchant" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        FROM channel_multi_merchant t
+        WHERE (t.pay_type = #{payType} or t.pay_type =0)
+        AND t.merchant_no = #{merchantNo}
+        AND t.channel_merchant_no = #{channelMerchantNo}
+        ORDER BY t.pay_type DESC limit 1
+    </select>
+
+</mapper>

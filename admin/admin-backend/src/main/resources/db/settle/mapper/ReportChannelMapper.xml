@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.settle.mapper.ReportChannelMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.settle.model.ReportChannel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="merchant_name" jdbcType="VARCHAR" property="merchantName"/>
+        <result column="channel_merchant_no" jdbcType="VARCHAR" property="channelMerchantNo"/>
+        <result column="trade_date" jdbcType="INTEGER" property="tradeDate"/>
+        <result column="channel_no" jdbcType="INTEGER" property="channelNo"/>
+        <result column="bank_type" jdbcType="VARCHAR" property="bankType"/>
+        <result column="channel_ext_no" jdbcType="INTEGER" property="channelExtNo"/>
+        <result column="success_amount" jdbcType="BIGINT" property="successAmount"/>
+        <result column="success_number" jdbcType="BIGINT" property="successNumber"/>
+        <result column="channel_cost_amount" jdbcType="BIGINT" property="channelCostAmount"/>
+        <result column="merchant_cost_amount" jdbcType="BIGINT" property="merchantCostAmount"/>
+        <result column="sub_merchant_cost_amount" jdbcType="BIGINT" property="subMerchantCostAmount"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.merchant_no
+             , t.merchant_name
+             , t.channel_merchant_no
+             , t.trade_date
+             , t.channel_no
+             , t.bank_type
+             , t.channel_ext_no
+             , t.success_amount
+             , t.success_number
+             , t.channel_cost_amount
+             , t.merchant_cost_amount
+             , t.sub_merchant_cost_amount
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM report_channel t
+        WHERE
+        <if test="params.merchantNo != null and params.merchantNo.trim() != ''">
+            t.merchant_no = #{params.merchantNo} AND
+        </if>
+        <if test="params.merchantName != null and params.merchantName.trim() != ''">
+            t.merchant_name = #{params.merchantName} AND
+        </if>
+        <if test="params.channelMerchantNo != null and params.channelMerchantNo.trim() != ''">
+            t.channel_merchant_no = #{params.channelMerchantNo} AND
+        </if>
+        <if test="params.tradeDate != null and params.tradeDate.trim() != ''">
+            t.trade_date = #{params.tradeDate} AND
+        </if>
+        <if test="params.channelNo != null and params.channelNo.trim() != ''">
+            t.channel_no = #{params.channelNo} AND
+        </if>
+        <if test="params.bankType != null and params.bankType.trim() != ''">
+            t.bank_type = #{params.bankType} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

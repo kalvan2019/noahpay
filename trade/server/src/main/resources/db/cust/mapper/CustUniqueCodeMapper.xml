@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.cust.mapper.CustUniqueCodeMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.cust.model.CustUniqueCode">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="part_library" jdbcType="TINYINT" property="partLibrary"/>
+        <result column="part_tables" jdbcType="TINYINT" property="partTables"/>
+        <result column="cust_type" jdbcType="VARCHAR" property="custType"/>
+        <result column="max_code" jdbcType="INTEGER" property="maxCode"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT
+            t.id,
+            t.part_library,
+            t.part_tables,
+            t.cust_type,
+            t.max_code,
+            1
+    </sql>
+
+    <sql id="whereCondition">
+        FROM cust_unique_code t
+        WHERE 1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>

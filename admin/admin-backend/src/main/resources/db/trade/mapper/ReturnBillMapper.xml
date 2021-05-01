@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.noahpay.pay.commons.db.trade.mapper.ReturnBillMapper">
+
+    <!-- @kalvan-tools.generated -->
+    <resultMap id="BaseResultMap" type="com.noahpay.pay.commons.db.trade.model.ReturnBill">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="trans_id" jdbcType="VARCHAR" property="transId"/>
+        <result column="trans_date" jdbcType="INTEGER" property="transDate"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_amount" jdbcType="BIGINT" property="orderAmount"/>
+        <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
+        <result column="merchant_fee" jdbcType="BIGINT" property="merchantFee"/>
+        <result column="sub_merchant_no" jdbcType="BIGINT" property="subMerchantNo"/>
+        <result column="sub_merchant_fee" jdbcType="BIGINT" property="subMerchantFee"/>
+        <result column="trans_account_date" jdbcType="INTEGER" property="transAccountDate"/>
+        <result column="return_ticket_date" jdbcType="INTEGER" property="returnTicketDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectAllField">
+        SELECT t.id
+             , t.trans_id
+             , t.trans_date
+             , t.order_id
+             , t.order_amount
+             , t.merchant_no
+             , t.merchant_fee
+             , t.sub_merchant_no
+             , t.sub_merchant_fee
+             , t.trans_account_date
+             , t.return_ticket_date
+             , t.remark
+             , t.create_time
+             , t.update_time
+    </sql>
+
+    <sql id="whereCondition">
+        FROM return_bill t
+        WHERE
+        <if test="params.transId != null and params.transId.trim() != ''">
+            t.trans_id = #{params.transId} AND
+        </if>
+        <if test="params.transDate != null and params.transDate.trim() != ''">
+            t.trans_date = #{params.transDate} AND
+        </if>
+        <if test="params.merchantNo != null and params.merchantNo.trim() != ''">
+            t.merchant_no = #{params.merchantNo} AND
+        </if>
+        <if test="params.transAccountDate != null and params.transAccountDate.trim() != ''">
+            t.trans_account_date = #{params.transAccountDate} AND
+        </if>
+        <if test="params.returnTicketDate != null and params.returnTicketDate.trim() != ''">
+            t.return_ticket_date = #{params.returnTicketDate} AND
+        </if>
+        <if test="params.updateTimeBegin != null and params.updateTimeBegin.trim() != ''">
+            t.update_time BETWEEN #{params.updateTimeBegin} AND #{params.updateTimeEnd} AND
+        </if>
+        1=1
+    </sql>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        <include refid="selectAllField"/>
+        <include refid="whereCondition"/>
+        ORDER BY t.id DESC
+    </select>
+
+
+</mapper>
