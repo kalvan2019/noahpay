@@ -10,7 +10,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
@@ -21,6 +21,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableFeignClients
 @EnableCreateCacheAnnotation
 @EnableMethodCache(basePackages = "com.noahpay.pay")
+@ComponentScan(basePackages = {"com.kalvan", "com.noahpay.pay"})
 @EnableAsync(proxyTargetClass = true)
 @EnableBinding({MqOutput.class})
 public class TradeApplication extends SpringBootServletInitializer {

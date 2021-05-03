@@ -47,13 +47,8 @@ public class PayBillCheck extends BaseCheck<TransRequest, PayBill> {
     @Override
     public void checkRepeat(TransRequest request) {
         log.debug("订单查重");
-        int count;
-        try {
-            count = payBillMapper.queryCountByOrderId(request.getMerchantNo(),
-                    request.getOrderDate(), request.getOrderId());
-        } catch (Throwable t) {
-            throw new BizException(TransReturnCode.ERROR, t);
-        }
+        int count = payBillMapper.queryCountByOrderId(request.getMerchantNo(),
+                request.getOrderDate(), request.getOrderId());
         if (count != 0) {
             throw new BizException(TransReturnCode.DATA_REPEAT.formatMessage(request.getOrderId()));
         }
