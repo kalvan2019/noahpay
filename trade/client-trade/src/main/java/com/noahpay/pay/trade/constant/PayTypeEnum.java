@@ -5,23 +5,37 @@ package com.noahpay.pay.trade.constant;
  */
 public enum PayTypeEnum {
     /**
-     * 公众号支付,微信浏览器、门店扫码
+     * 公众号支付
      */
-    WX_JSAPI,
+    JSAPI("JSAPI", "微信浏览器、门店扫码"),
     /**
-     * 扫码支付PC网站、门店扫码
+     * 扫码支付
      */
-    WX_NATIVE,
+    NATIVE("NATIVE", "PC网站、门店扫码"),
     /**
-     * APP支付第三方APP
+     * APP支付
      */
-    WX_APP,
+    APP("APP", "第三方APP"),
     /**
-     * H5支付第三方手机浏览器
+     * H5支付
      */
-    WX_H5,
+    MWEB("MWEB", "第三方手机浏览器"),
     /**
-     * 刷卡支付门店刷卡
+     * 刷卡支付
      */
-    WX_MICROPAY;
+    MICROPAY("MICROPAY", "门店刷卡");
+
+    /**
+     * 类型
+     */
+    public String code;
+    /**
+     * 使用场景
+     */
+    public String desc;
+
+    PayTypeEnum(String code, String desc) {
+        this.code = code;
+        this.desc = desc;
+    }
 }

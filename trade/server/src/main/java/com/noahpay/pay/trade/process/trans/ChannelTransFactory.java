@@ -2,9 +2,9 @@ package com.noahpay.pay.trade.process.trans;
 
 import com.kalvan.client.exception.BizException;
 import com.noahpay.pay.commons.db.trade.model.PayBill;
-import com.noahpay.pay.trade.process.template.BaseChannelTrans;
 import com.noahpay.pay.trade.constant.PayTypeEnum;
 import com.noahpay.pay.trade.constant.TransReturnCode;
+import com.noahpay.pay.trade.process.template.BaseChannelTrans;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -21,14 +21,25 @@ public class ChannelTransFactory {
     WxPay wxPay;
 
     /**
-     *
      * 获取通道支付交易处理器
      *
      * @param payBill 支付明细
      * @return 处理器
      */
     public BaseChannelTrans<PayBill> getChannelTrans(PayBill payBill) {
-        if (PayTypeEnum.WX_APP.toString().equals(payBill.getPayType())) {
+        if (PayTypeEnum.NATIVE.code.equals(payBill.getPayType())) {
+            return wxPay;
+        }
+        if (PayTypeEnum.JSAPI.code.equals(payBill.getPayType())) {
+            return wxPay;
+        }
+        if (PayTypeEnum.MICROPAY.code.equals(payBill.getPayType())) {
+            return wxPay;
+        }
+        if (PayTypeEnum.APP.code.equals(payBill.getPayType())) {
+            return wxPay;
+        }
+        if (PayTypeEnum.MWEB.code.equals(payBill.getPayType())) {
             return wxPay;
         }
         throw new BizException(TransReturnCode.REQUEST_SERVICE_NOT_SUPPORT.formatMessage(payBill.getPayType()));

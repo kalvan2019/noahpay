@@ -26,7 +26,7 @@ public class PayBillInit extends BaseInit<TransRequest, PayBill> {
         bill.setState(TransStateEnum.WAIT.code);
         bill.setCheckState(CheckStateEnum.CHECK_WAIT.code);
         bill.setNotifyState(NotifyStateEnum.NOTIFY_WAIT.code);
-        bill.setPayType(request.getPayType().toString());
+        bill.setPayType(request.getPayType());
         bill.setPayResultCode(TransReturnCode.PROCESS.getCode());
         bill.setPayResultNote(TransReturnCode.PROCESS.getMessage());
         //订单信息

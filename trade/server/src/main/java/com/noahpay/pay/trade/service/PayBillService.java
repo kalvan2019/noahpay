@@ -203,7 +203,9 @@ public class PayBillService {
         payBillMapper.updateChannelResponse(payBillDb);
         //同步支付明细信息
         BeanUtils.copyProperties(payBillDb, payBill);
-        return syncUpdateTransBill(payBillDb);
+        return payBillDb;
+        // TODO 异步处理事件
+//        return syncUpdateTransBill(payBillDb);
     }
 
     /**

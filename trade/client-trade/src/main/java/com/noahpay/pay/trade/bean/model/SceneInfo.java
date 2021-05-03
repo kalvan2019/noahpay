@@ -3,6 +3,8 @@ package com.noahpay.pay.trade.bean.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 场景信息
  *

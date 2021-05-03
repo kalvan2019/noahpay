@@ -1,6 +1,5 @@
 package com.noahpay.pay.trade.bean.req;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.noahpay.pay.trade.bean.model.Amount;
 import com.noahpay.pay.trade.bean.model.PayerInfo;
 import com.noahpay.pay.trade.bean.model.SceneInfo;
@@ -62,7 +61,7 @@ public class TransRequest implements java.io.Serializable {
      * @see PayTypeEnum
      */
     @NotNull(message = "支付方式不能为空")
-    private PayTypeEnum payType;
+    private String payType;
     /**
      * 附加数据
      * 附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据

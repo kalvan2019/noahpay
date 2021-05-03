@@ -205,6 +205,12 @@ public class PayBill implements Serializable {
     private String channelCodeUrl;
 
     /**
+     * 通道支付链接
+     */
+    @Column(name = "channel_web_url")
+    private String channelWebUrl;
+
+    /**
      * 通道会计日期
      */
     @Column(name = "channel_account_date")

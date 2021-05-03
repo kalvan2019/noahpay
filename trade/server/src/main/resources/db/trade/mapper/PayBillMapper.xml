@@ -35,6 +35,7 @@
         <result column="channel_recv_ext" jdbcType="VARCHAR" property="channelRecvExt"/>
         <result column="channel_prepay_id" jdbcType="VARCHAR" property="channelPrepayId"/>
         <result column="channel_code_url" jdbcType="VARCHAR" property="channelCodeUrl"/>
+        <result column="channel_web_url" jdbcType="VARCHAR" property="channelWebUrl"/>
         <result column="channel_account_date" jdbcType="INTEGER" property="channelAccountDate"/>
         <result column="channel_result_code" jdbcType="VARCHAR" property="channelResultCode"/>
         <result column="channel_result_note" jdbcType="VARCHAR" property="channelResultNote"/>
@@ -79,6 +80,7 @@
              , t.channel_recv_ext
              , t.channel_prepay_id
              , t.channel_code_url
+             , t.channel_web_url
              , t.channel_account_date
              , t.channel_result_code
              , t.channel_result_note

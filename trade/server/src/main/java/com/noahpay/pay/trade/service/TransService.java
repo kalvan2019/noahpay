@@ -3,14 +3,15 @@ package com.noahpay.pay.trade.service;
 import com.kalvan.client.exception.BizException;
 import com.kalvan.client.model.Response;
 import com.kalvan.web.util.DateUtil;
-import com.noahpay.pay.trade.context.TradeContextHolder;
 import com.noahpay.pay.commons.db.trade.model.PayBill;
 import com.noahpay.pay.enums.mq.msg.TransNotify;
 import com.noahpay.pay.trade.bean.req.TransRequest;
 import com.noahpay.pay.trade.bean.res.TransResponse;
 import com.noahpay.pay.trade.constant.NotifyStateEnum;
+import com.noahpay.pay.trade.constant.PayTypeEnum;
 import com.noahpay.pay.trade.constant.TransReturnCode;
 import com.noahpay.pay.trade.constant.TransStateEnum;
+import com.noahpay.pay.trade.context.TradeContextHolder;
 import com.noahpay.pay.trade.event.MqOutput;
 import com.noahpay.pay.trade.process.check.PayBillCheck;
 import com.noahpay.pay.trade.process.fee.PayBillFee;
@@ -98,10 +99,18 @@ public class TransService {
             notify(payBillDb);
             return getResult(payBillDb);
         } catch (BizException t) {
-            return Response.buildResult(t).setState(TransStateEnum.OVERTIME.code);
+            Response response = Response.buildResult(t);
+            if (PayTypeEnum.MICROPAY.code.equals(payBill.getPayType())) {
+                response.setState(TransStateEnum.OVERTIME.code);
+            }
+            return response;
         } catch (Throwable t) {
             log.error("处理异常", t);
-            return Response.buildResult(TransReturnCode.ERROR).setState(TransStateEnum.OVERTIME.code);
+            Response response = Response.buildResult(TransReturnCode.ERROR);
+            if (PayTypeEnum.MICROPAY.code.equals(payBill.getPayType())) {
+                response.setState(TransStateEnum.OVERTIME.code);
+            }
+            return response;
         }
     }
 
@@ -119,6 +128,7 @@ public class TransService {
             if (payBill.getState() != TransStateEnum.SUCCESS.code
                     && payBill.getState() == TransStateEnum.FAIL.code) {
                 log.debug("非最终状态无需通知:{}状态:{}", payBill.getTransId(), payBill.getState());
+                return;
             }
             //最终成功失败才发通知
             TransNotify transNotify = new TransNotify();
@@ -183,6 +193,7 @@ public class TransService {
         transResponse.setMerchantNo(payBill.getMerchantNo());
         transResponse.setPrepayId(payBill.getChannelPrepayId());
         transResponse.setCodeUrl(payBill.getChannelCodeUrl());
+        transResponse.setWebUrl(payBill.getChannelWebUrl());
         Response response = Response.buildResult(payBill.getPayResultCode(), payBill.getPayResultNote());
         return response.setState(state).setData(transResponse);
     }

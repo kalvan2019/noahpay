@@ -20,7 +20,7 @@ public interface ChannelReturnCode extends CommonReturnCode {
      * 66xx 未知异常
      */
     ReturnCode CODE_6000 = new ReturnCode("6000", "非法请求");
-    ReturnCode CODE_6001 = new ReturnCode("6001", "未实现方法{0}");
+    ReturnCode CODE_6001 = new ReturnCode("6001", "渠道参数未配置{0}");
     ReturnCode CODE_6101 = new ReturnCode("6101", "参数不能为空{0}");
     ReturnCode CODE_6102 = new ReturnCode("6102", "参数不合法{0}");
     ReturnCode CODE_6103 = new ReturnCode("6103", "{0}超过范围{1}");
