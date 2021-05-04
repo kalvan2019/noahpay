@@ -1,6 +1,6 @@
 package com.noahpay.pay.cust.bean.model;
 
-import com.kalvan.enums.regexp.RegExpEnum;
+import com.noahpay.pay.enums.regexp.RegExpEnum;
 import lombok.Getter;
 import lombok.Setter;
 
