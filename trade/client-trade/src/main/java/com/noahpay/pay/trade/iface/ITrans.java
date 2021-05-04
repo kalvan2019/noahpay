@@ -1,6 +1,7 @@
 package com.noahpay.pay.trade.iface;
 
 import com.kalvan.client.model.ApiRequest;
+import com.kalvan.client.model.Request;
 import com.kalvan.client.model.Response;
 import com.noahpay.pay.trade.bean.req.TransRequest;
 import com.noahpay.pay.trade.bean.res.TransResponse;
@@ -28,6 +29,6 @@ public interface ITrans {
      * @return 返回交易接口
      */
     @RequestMapping(value = "trans/order", method = RequestMethod.POST)
-    Response<TransResponse> order(@Validated @RequestBody ApiRequest<TransRequest> request);
+    Response<TransResponse> order(@Validated @RequestBody Request<TransRequest> request);
 
 }

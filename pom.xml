@@ -6,10 +6,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>sdk</module>
-        <module>sdk-web</module>
         <module>commons-enum</module>
-        <module>commons-db</module>
         <module>trade</module>
         <module>job</module>
         <module>admin/admin-backend</module>

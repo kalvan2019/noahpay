@@ -7,13 +7,11 @@
     <packaging>pom</packaging>
     <modules>
         <module>commons-enum</module>
-        <module>commons-db</module>
         <module>trade/client-channel</module>
         <module>trade/client-cust</module>
         <module>trade/client-fee</module>
         <module>trade/client-risk</module>
         <module>trade/client-route</module>
         <module>trade/client-trade</module>
-        <module>sdk</module>
     </modules>
 </project>

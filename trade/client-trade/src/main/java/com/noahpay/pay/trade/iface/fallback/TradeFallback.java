@@ -15,7 +15,7 @@ import com.noahpay.pay.trade.iface.ITrans;
 public class TradeFallback implements ITrans {
 
     @Override
-    public Response<TransResponse> order(ApiRequest<TransRequest> request) {
+    public Response<TransResponse> order(Request<TransRequest> request) {
         return Response.buildResult(TransReturnCode.FALLBACK).setState(TransStateEnum.FAIL.code);
     }
 }
