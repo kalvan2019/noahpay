@@ -3,7 +3,7 @@ package com.noahpay.pay.route.event;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.kalvan.enums.cache.CacheTypeEnum;
+import com.noahpay.pay.enums.cache.CacheTypeEnum;
 import com.kalvan.web.event.CacheRefreshEvent;
 import com.noahpay.pay.route.service.CacheChannelService;
 import com.noahpay.pay.route.service.CacheRouteService;

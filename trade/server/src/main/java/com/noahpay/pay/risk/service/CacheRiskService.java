@@ -9,7 +9,7 @@ import com.noahpay.pay.commons.db.risk.mapper.BlackListMapper;
 import com.noahpay.pay.commons.db.risk.mapper.MerchantTransSumMapper;
 import com.noahpay.pay.commons.db.risk.model.BlackList;
 import com.noahpay.pay.commons.db.risk.model.MerchantTransSum;
-import com.kalvan.enums.cache.CacheTypeEnum;
+import com.noahpay.pay.enums.cache.CacheTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

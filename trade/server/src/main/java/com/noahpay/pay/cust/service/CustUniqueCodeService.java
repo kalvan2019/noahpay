@@ -1,10 +1,10 @@
 package com.noahpay.pay.cust.service;
 
+import com.kalvan.db.sharding.algorithm.MerchantNoShardingAlgorithm;
+import com.kalvan.db.sharding.algorithm.ShardingConfig;
 import com.noahpay.pay.commons.db.cust.mapper.CustUniqueCodeMapper;
 import com.noahpay.pay.commons.db.cust.model.CustUniqueCode;
 import com.noahpay.pay.cust.constant.CustTypeEnum;
-import com.noahpay.pay.db.algorithm.MerchantNoShardingAlgorithm;
-import com.noahpay.pay.db.algorithm.ShardingConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

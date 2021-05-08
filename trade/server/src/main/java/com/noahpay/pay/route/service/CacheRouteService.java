@@ -9,7 +9,7 @@ import com.noahpay.pay.commons.db.channel.mapper.ChannelSupportPayTypeMapper;
 import com.noahpay.pay.commons.db.channel.mapper.RouteMerchantMapper;
 import com.noahpay.pay.commons.db.channel.mapper.RouteRuleMapper;
 import com.noahpay.pay.commons.db.channel.model.*;
-import com.kalvan.enums.cache.CacheTypeEnum;
+import com.noahpay.pay.enums.cache.CacheTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

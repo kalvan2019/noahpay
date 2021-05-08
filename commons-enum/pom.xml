@@ -8,4 +8,11 @@
     </parent>
     <artifactId>commons-enum</artifactId>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>store.kalvan.platform</groupId>
+            <artifactId>platform-commons</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

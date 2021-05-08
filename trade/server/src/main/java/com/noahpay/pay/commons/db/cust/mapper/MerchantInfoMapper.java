@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 /**
  * 商户信息Mapper
  *
- * @author kalvan.tools:chenliang
+ * @author kalvan.tools:kalvan
  */
 @Repository
 public interface MerchantInfoMapper extends IBaseMapper<MerchantInfo> {

@@ -59,7 +59,6 @@ public class MerchantService {
         MerchantInfo merchantInfo = new MerchantInfo();
         merchantInfo.setMerchantNo(custUniqueCodeService.getUniqueNoDefault(CustTypeEnum.MERCHANT));
         merchantInfo.setMerchantName(merchantRegisterRequest.getMerchantName());
-        merchantInfo.setBusinessLicenseNo(companyInfo.getBusinessLicenseNo());
         BankCardInfo bankCardInfo = merchantRegisterRequest.getBankCardInfo();
         BeanUtils.copyProperties(bankCardInfo, merchantInfo);
         merchantInfo.setState(CustStateEnum.INVALID.code);

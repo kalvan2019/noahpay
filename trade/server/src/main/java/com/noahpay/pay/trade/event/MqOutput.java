@@ -1,6 +1,6 @@
 package com.noahpay.pay.trade.event;
 
-import com.kalvan.enums.mq.MqTopicEnum;
+import com.noahpay.pay.enums.mq.MqTopicEnum;
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;
 

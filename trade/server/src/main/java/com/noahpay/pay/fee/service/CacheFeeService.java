@@ -10,7 +10,7 @@ import com.noahpay.pay.commons.db.cust.mapper.FeeSegmentRuleMapper;
 import com.noahpay.pay.commons.db.cust.model.FeeMerchant;
 import com.noahpay.pay.commons.db.cust.model.FeeRule;
 import com.noahpay.pay.commons.db.cust.model.FeeSegmentRule;
-import com.kalvan.enums.cache.CacheTypeEnum;
+import com.noahpay.pay.enums.cache.CacheTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

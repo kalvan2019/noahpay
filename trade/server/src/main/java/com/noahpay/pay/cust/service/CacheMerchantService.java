@@ -7,7 +7,7 @@ import com.noahpay.pay.commons.db.cust.mapper.MerchantInfoMapper;
 import com.noahpay.pay.commons.db.cust.mapper.MerchantProductTransMapper;
 import com.noahpay.pay.commons.db.cust.model.MerchantInfo;
 import com.noahpay.pay.commons.db.cust.model.MerchantProductTrans;
-import com.kalvan.enums.cache.CacheTypeEnum;
+import com.noahpay.pay.enums.cache.CacheTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

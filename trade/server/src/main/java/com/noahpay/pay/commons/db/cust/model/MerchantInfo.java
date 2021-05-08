@@ -4,9 +4,7 @@ import com.kalvan.db.mybatis.annotation.ShardingUk;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,7 +12,7 @@ import java.util.Date;
  * 商户信息实体
  * 表名 merchant_info
  *
- * @author kalvan.tools:chenliang
+ * @author kalvan.tools:kalvan
  */
 @Getter
 @Setter
@@ -26,6 +24,7 @@ public class MerchantInfo implements Serializable {
      * 自增id
      */
     @Id
+    @GeneratedValue(generator = "JDBC")
     @Column(name = "id")
     private Long id;
 
@@ -43,10 +42,52 @@ public class MerchantInfo implements Serializable {
     private String merchantName;
 
     /**
-     * 营业执照注册号
+     * 商户简称
      */
-    @Column(name = "business_license_no")
-    private String businessLicenseNo;
+    @Column(name = "merchant_shortname")
+    private String merchantShortname;
+
+    /**
+     * 商户类型
+     */
+    @Column(name = "merchant_type")
+    private String merchantType;
+
+    /**
+     * 国家或区域
+     */
+    @Column(name = "merchant_country_code")
+    private String merchantCountryCode;
+
+    /**
+     * 业务类目
+     */
+    @Column(name = "business_category")
+    private String businessCategory;
+
+    /**
+     * 商户行业编码
+     */
+    @Column(name = "mcc")
+    private String mcc;
+
+    /**
+     * 联系人姓名
+     */
+    @Column(name = "contact_name")
+    private String contactName;
+
+    /**
+     * 联系人电话
+     */
+    @Column(name = "contact_phone")
+    private String contactPhone;
+
+    /**
+     * 联系人邮箱
+     */
+    @Column(name = "contact_email")
+    private String contactEmail;
 
     /**
      * 结算银行帐号
@@ -55,16 +96,10 @@ public class MerchantInfo implements Serializable {
     private String bankAccountNo;
 
     /**
-     * 银行户名
+     * 结算银行户名
      */
     @Column(name = "bank_account_name")
     private String bankAccountName;
-
-    /**
-     * 银行帐户类型
-     */
-    @Column(name = "bank_account_type")
-    private Integer bankAccountType;
 
     /**
      * 行别
@@ -73,10 +108,10 @@ public class MerchantInfo implements Serializable {
     private String bankType;
 
     /**
-     * 行名
+     * 联行号
      */
-    @Column(name = "bank_name")
-    private String bankName;
+    @Column(name = "bank_code")
+    private String bankCode;
 
     /**
      * 登录密码

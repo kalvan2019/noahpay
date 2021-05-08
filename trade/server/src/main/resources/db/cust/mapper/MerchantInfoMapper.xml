@@ -8,13 +8,18 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="merchant_no" jdbcType="BIGINT" property="merchantNo"/>
         <result column="merchant_name" jdbcType="VARCHAR" property="merchantName"/>
-        <result column="cust_no" jdbcType="BIGINT" property="custNo"/>
-        <result column="business_license_no" jdbcType="VARCHAR" property="businessLicenseNo"/>
+        <result column="merchant_shortname" jdbcType="VARCHAR" property="merchantShortname"/>
+        <result column="merchant_type" jdbcType="VARCHAR" property="merchantType"/>
+        <result column="merchant_country_code" jdbcType="VARCHAR" property="merchantCountryCode"/>
+        <result column="business_category" jdbcType="VARCHAR" property="businessCategory"/>
+        <result column="mcc" jdbcType="VARCHAR" property="mcc"/>
+        <result column="contact_name" jdbcType="VARCHAR" property="contactName"/>
+        <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone"/>
+        <result column="contact_email" jdbcType="VARCHAR" property="contactEmail"/>
         <result column="bank_account_no" jdbcType="VARCHAR" property="bankAccountNo"/>
         <result column="bank_account_name" jdbcType="VARCHAR" property="bankAccountName"/>
-        <result column="bank_account_type" jdbcType="TINYINT" property="bankAccountType"/>
         <result column="bank_type" jdbcType="VARCHAR" property="bankType"/>
-        <result column="bank_name" jdbcType="VARCHAR" property="bankName"/>
+        <result column="bank_code" jdbcType="VARCHAR" property="bankCode"/>
         <result column="login_password" jdbcType="VARCHAR" property="loginPassword"/>
         <result column="pay_password" jdbcType="VARCHAR" property="payPassword"/>
         <result column="salt" jdbcType="VARCHAR" property="salt"/>
@@ -24,29 +29,33 @@
     </resultMap>
 
     <sql id="selectAllField">
-        SELECT
-            t.id,
-            t.merchant_no,
-            t.merchant_name,
-            t.cust_no,
-            t.business_license_no,
-            t.bank_account_no,
-            t.bank_account_name,
-            t.bank_account_type,
-            t.bank_type,
-            t.bank_name,
-            t.login_password,
-            t.pay_password,
-            t.salt,
-            t.state,
-            t.create_time,
-            t.update_time,
-            1
+        SELECT t.id
+             , t.merchant_no
+             , t.merchant_name
+             , t.merchant_shortname
+             , t.merchant_type
+             , t.merchant_country_code
+             , t.business_category
+             , t.mcc
+             , t.contact_name
+             , t.contact_phone
+             , t.contact_email
+             , t.bank_account_no
+             , t.bank_account_name
+             , t.bank_type
+             , t.bank_code
+             , t.login_password
+             , t.pay_password
+             , t.salt
+             , t.state
+             , t.create_time
+             , t.update_time
     </sql>
 
     <sql id="whereCondition">
         FROM merchant_info t
-        WHERE 1=1
+        WHERE
+        1=1
     </sql>
 
     <select id="queryPage" resultMap="BaseResultMap">

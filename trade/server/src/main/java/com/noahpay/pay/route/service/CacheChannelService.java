@@ -7,10 +7,8 @@ import com.noahpay.pay.commons.db.channel.mapper.ChannelExtParamMapper;
 import com.noahpay.pay.commons.db.channel.mapper.ChannelInfoMapper;
 import com.noahpay.pay.commons.db.channel.model.ChannelExtParam;
 import com.noahpay.pay.commons.db.channel.model.ChannelInfo;
-import com.kalvan.enums.cache.CacheTypeEnum;
+import com.noahpay.pay.enums.cache.CacheTypeEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

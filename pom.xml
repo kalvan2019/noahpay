@@ -9,6 +9,5 @@
         <module>commons-enum</module>
         <module>trade</module>
         <module>job</module>
-        <module>admin/admin-backend</module>
     </modules>
 </project>

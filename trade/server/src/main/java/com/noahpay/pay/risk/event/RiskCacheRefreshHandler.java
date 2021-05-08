@@ -1,6 +1,6 @@
 package com.noahpay.pay.risk.event;
 
-import com.kalvan.enums.cache.CacheTypeEnum;
+import com.noahpay.pay.enums.cache.CacheTypeEnum;
 import com.noahpay.pay.risk.service.CacheRiskService;
 import com.kalvan.web.event.CacheRefreshEvent;
 import lombok.extern.slf4j.Slf4j;

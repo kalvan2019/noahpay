@@ -1,56 +1,14 @@
 package com.noahpay.pay.enums.cache;
 
 
+import com.kalvan.enums.cache.PlatformCacheTypeEnum;
+
 /**
  * 缓存type
  *
  * @author kalvan
  */
-public interface CacheTypeEnum {
-    /**
-     * API服务缓存
-     */
-    String ALL_GATEWAY_SERVICE = "ALL_GATEWAY_SERVICE";
-    /**
-     * appid
-     */
-    String ALL_APP = "ALL_APP";
-    /**
-     * appId缓存
-     */
-    String GATEWAY_APP = "GATEWAY_APP";
-    /**
-     * API服务缓存
-     */
-    String GATEWAY_SERVICE = "GATEWAY_SERVICE";
-    /**
-     * 服务授权缓存
-     */
-    String GATEWAY_APP_SERVICE = "GATEWAY_APP_SERVICE";
-    /**
-     * 路由缓存
-     */
-    String GATEWAY_ROUTE = "GATEWAY_ROUTE";
-    /**
-     * 灰度规则缓存
-     */
-    String GRAY_RULE = "GRAY_RULE";
-    /**
-     * 灰度规则缓存
-     */
-    String GATEWAY_GRAY = "GATEWAY_GRAY";
-    /**
-     * 证书密钥缓存
-     */
-    String GATEWAY_RSA = "GATEWAY_RSA";
-    /**
-     * 字典
-     */
-    String DICT = "DICT";
-    /**
-     * mock
-     */
-    String MOCK_URL = "MOCK_URL";
+public interface CacheTypeEnum  extends PlatformCacheTypeEnum {
     /**
      * cardBin
      */

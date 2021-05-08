@@ -1,6 +1,5 @@
 package com.noahpay.pay.trade.iface;
 
-import com.kalvan.client.model.ApiRequest;
 import com.kalvan.client.model.Request;
 import com.kalvan.client.model.Response;
 import com.noahpay.pay.trade.bean.req.TransRequest;
@@ -11,7 +10,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 支付接口
@@ -28,7 +26,7 @@ public interface ITrans {
      * @param request 请求参数
      * @return 返回交易接口
      */
-    @RequestMapping(value = "trans/order", method = RequestMethod.POST)
+    @RequestMapping(value = "pay/order", method = RequestMethod.POST)
     Response<TransResponse> order(@Validated @RequestBody Request<TransRequest> request);
 
 }
