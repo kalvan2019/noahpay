@@ -1,10 +1,12 @@
 package com.noahpay.pay.trade.bean.res;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.noahpay.pay.trade.bean.model.Amount;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * 交易返回对象
@@ -18,12 +20,24 @@ public class TransResponse implements java.io.Serializable {
     /**
      * 商户号
      */
+    @NotBlank
     private Long merchantNo;
     /**
      * 交易流水号
      */
     @NotBlank
     private String transId;
+    /**
+     * 附加数据
+     * 附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
+     */
+    @NotBlank
+    private String attach;
+    /**
+     * 订单金额
+     */
+    @NotNull
+    private Amount amount;
     /**
      * 预支付交易会话标识
      */
@@ -38,4 +52,9 @@ public class TransResponse implements java.io.Serializable {
      * trade_type=MWEB时有返回
      */
     private String webUrl;
+    /**
+     * 通道返回附加数据
+     * json格式
+     */
+    private String channelRecvExt;
 }

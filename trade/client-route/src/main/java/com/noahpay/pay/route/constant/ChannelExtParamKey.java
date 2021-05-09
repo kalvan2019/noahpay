@@ -12,7 +12,7 @@ public enum ChannelExtParamKey {
     MERCHANT_NAME("merchantName", "通道商户名称"),
     APP_ID("appId", "公众账号ID"),
     API_KEY("apiKey", "签名密钥"),
-    NOTIFY_URL("notifyUrl", "通知地址,后面拼接/通道号/支付方式"),
+    NOTIFY_URL("notifyUrl", "通知地址,后面拼接/通道号"),
     PRIVATE_KEY("privateKey", "通道商户私钥"),
     PRIVATE_KEY_PATH("privateKeyPath", "通道商户私钥路径"),
     PRIVATE_KEY_PASSWORD("privateKeyPassword", "通道商户私钥密码"),

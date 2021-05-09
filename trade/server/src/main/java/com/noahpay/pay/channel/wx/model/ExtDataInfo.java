@@ -20,4 +20,12 @@ public class ExtDataInfo implements java.io.Serializable {
      * 用户是否关注公众账号，Y-关注，N-未关注，仅在公众账号类型支付有效
      */
     private String isSubscribe;
+    /**
+     * 用户在子商户appid下的唯一标识
+     */
+    private String subOpenid;
+    /**
+     * 用户在子商户appid下的唯一标识
+     */
+    private String subIsSubscribe;
 }

@@ -122,6 +122,9 @@ public class PayBillService {
     @Transactional(value = DataSourceConstants.TRADE_TRANSACTION_MANAGER, rollbackFor = Exception.class)
     public PayBill updateChannelResponse(PayBill payBill, Response<ChannelTransResponse> response) {
         log.info("通道返回结果处理");
+        if (response == null) {
+            return payBill;
+        }
         PayBill payBillDb;
         try {
             if (payBill == null) {

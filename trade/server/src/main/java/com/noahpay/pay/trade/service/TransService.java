@@ -5,6 +5,7 @@ import com.kalvan.client.model.Response;
 import com.kalvan.web.util.DateUtil;
 import com.noahpay.pay.commons.db.trade.model.PayBill;
 import com.noahpay.pay.enums.mq.msg.TransNotify;
+import com.noahpay.pay.trade.bean.model.Amount;
 import com.noahpay.pay.trade.bean.req.OrderRequest;
 import com.noahpay.pay.trade.bean.res.TransResponse;
 import com.noahpay.pay.trade.constant.NotifyStateEnum;
@@ -163,37 +164,36 @@ public class TransService {
         //默认为已受理
         int state = TransStateEnum.ACCEPT.code;
         //最终状态
-        if (payBill != null) {
-            //如果产生了支付明细则以支付明细状态为准
-            if (payBill.getState() == TransStateEnum.SUCCESS.code
-                    || payBill.getState() == TransStateEnum.FAIL.code
-                    || payBill.getState() == TransStateEnum.CONFIRM.code) {
-                state = payBill.getState();
+        if (payBill.getState() == TransStateEnum.SUCCESS.code
+                || payBill.getState() == TransStateEnum.FAIL.code
+                || payBill.getState() == TransStateEnum.ACCEPT.code
+                || payBill.getState() == TransStateEnum.CONFIRM.code
+                || payBill.getState() == TransStateEnum.OVERTIME.code
+                || payBill.getState() == TransStateEnum.SUCCESS_PROCESS.code
+                || payBill.getState() == TransStateEnum.FAIL_PROCESS.code
+                || payBill.getState() == TransStateEnum.FAIL_CLOSE.code
+        ) {
+            state = payBill.getState();
+        } else if (payBill.getState() == TransStateEnum.WAIT.code) {
+            //收银台订单可以继续支付,判断订单是否超时关闭
+            if (payBill.getTimeExpire() != null && DateUtil.compare(new Date(), payBill.getTimeExpire()) > 0) {
+                payBillService.updateFailClose(payBill);
             }
-        } else {
-            if (payBill.getState() == TransStateEnum.SUCCESS.code
-                    || payBill.getState() == TransStateEnum.SUCCESS_PROCESS.code
-                    || payBill.getState() == TransStateEnum.FAIL.code
-                    || payBill.getState() == TransStateEnum.FAIL_PROCESS.code
-                    || payBill.getState() == TransStateEnum.FAIL_CLOSE.code
-                    || payBill.getState() == TransStateEnum.CONFIRM.code
-            ) {
-                state = payBill.getState();
-            } else if (payBill.getState() == TransStateEnum.WAIT.code) {
-                //收银台订单可以继续支付,判断订单是否超时关闭
-                if (payBill.getTimeExpire() != null && DateUtil.compare(new Date(), payBill.getTimeExpire()) > 0) {
-                    payBillService.updateFailClose(payBill);
-                }
-                state = payBill.getState();
-            }
+            state = payBill.getState();
         }
         //订单信息
         TransResponse transResponse = new TransResponse();
-        transResponse.setTransId(payBill.getTransId());
         transResponse.setMerchantNo(payBill.getMerchantNo());
+        transResponse.setTransId(payBill.getTransId());
+        transResponse.setAttach(payBill.getAttach());
+        Amount amount = new Amount();
+        amount.setCurrency(payBill.getCurrency());
+        amount.setTotal(payBill.getAmount());
+        transResponse.setAmount(amount);
         transResponse.setPrepayId(payBill.getChannelPrepayId());
         transResponse.setCodeUrl(payBill.getChannelCodeUrl());
         transResponse.setWebUrl(payBill.getChannelWebUrl());
+        transResponse.setChannelRecvExt(payBill.getChannelRecvExt());
         Response response = Response.buildResult(payBill.getPayResultCode(), payBill.getPayResultNote());
         return response.setState(state).setData(transResponse);
     }

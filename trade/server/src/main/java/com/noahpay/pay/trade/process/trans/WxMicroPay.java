@@ -16,11 +16,13 @@ import com.noahpay.pay.channel.wx.response.pay.WxPayMicropayResponse;
 import com.noahpay.pay.commons.db.trade.model.PayBill;
 import com.noahpay.pay.route.constant.ChannelExtParamKey;
 import com.noahpay.pay.route.service.ChannelService;
-import com.noahpay.pay.trade.bean.model.SceneInfo;
+import com.noahpay.pay.trade.constant.TransReturnCode;
+import com.noahpay.pay.trade.constant.TransStateEnum;
 import com.noahpay.pay.trade.process.template.BaseChannelTrans;
 import com.noahpay.pay.trade.service.PayBillService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -37,6 +39,8 @@ public class WxMicroPay extends BaseChannelTrans<PayBill> {
     PayBillService payBillService;
     @Resource
     ChannelService channelService;
+    @Value("${server.ip}")
+    String ip;
 
     @Override
     public void channelConvertParam(PayBill bill) {
@@ -66,8 +70,7 @@ public class WxMicroPay extends BaseChannelTrans<PayBill> {
         unifiedOrder.setOut_trade_no(bill.getChannelSendSn());
         unifiedOrder.setTotal_fee(String.valueOf(bill.getChannelAmount()));
         unifiedOrder.setFee_type(bill.getCurrency());
-        SceneInfo sceneInfo = JSON.parseObject(bill.getSceneInfo(), SceneInfo.class);
-        unifiedOrder.setSpbill_create_ip(sceneInfo.getDeviceIp());
+        unifiedOrder.setSpbill_create_ip(ip);
         if (bill.getTimeStart() != null) {
             unifiedOrder.setTime_start(DatePattern.PURE_DATETIME_FORMAT.format(bill.getTimeStart()));
         }
@@ -84,6 +87,11 @@ public class WxMicroPay extends BaseChannelTrans<PayBill> {
         //发送请求
         WxRequest wxRequest = new WxRequest(unifiedOrder, WxPayMicropayResponse.class, WxPayConstants.MICROPAY_URL_SUFFIX).setKey(apiKey);
         WxPayMicropayResponse wxResponse = WxClient.execute(wxRequest);
+        if (wxResponse == null) {
+            //没有获取到支付结果当超时
+            Response response = Response.buildResult(TransReturnCode.OVERTIME).setState(TransStateEnum.OVERTIME.code);
+            return payBillService.updateChannelResponse(bill, response);
+        }
         if (wxResponse.isSuccess()) {
             //通信成功
             ChannelTransResponse channelResponse = new ChannelTransResponse();
@@ -96,6 +104,8 @@ public class WxMicroPay extends BaseChannelTrans<PayBill> {
             ExtDataInfo extDataInfo = new ExtDataInfo();
             extDataInfo.setOpenid(wxResponse.getOpenid());
             extDataInfo.setIsSubscribe(wxResponse.getIsSubscribe());
+            extDataInfo.setSubOpenid(wxResponse.getSubOpenid());
+            extDataInfo.setSubIsSubscribe(wxResponse.getSubIsSubscribe());
             channelResponse.setChannelRecvExt(JSON.toJSONString(extDataInfo));
             Response response;
             if (WxPayConstants.SUCCESS.equals(wxResponse.getResultCode())) {
@@ -108,14 +118,10 @@ public class WxMicroPay extends BaseChannelTrans<PayBill> {
             //更新支付结果
             return payBillService.updateChannelResponse(bill, response);
         } else {
+            //当失败
             // <xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[不识别的参数notify_url]]></return_msg></xml>
             Response response = Response.buildResult(wxResponse.getReturnCode(), wxResponse.getReturnMsg());
-            if (StringUtils.isNoneBlank(wxResponse.getReturnCode(), wxResponse.getReturnMsg())) {
-                //当失败
-                response.setState(CommonStateEnum.FAIL.code);
-            } else {
-                response.setState(CommonStateEnum.OVERTIME.code);
-            }
+            response.setState(CommonStateEnum.FAIL.code);
             return payBillService.updateChannelResponse(bill, response);
         }
     }

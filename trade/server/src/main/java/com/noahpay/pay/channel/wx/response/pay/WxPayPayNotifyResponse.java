@@ -52,6 +52,11 @@ public class WxPayPayNotifyResponse extends WxPayResponse {
      */
     private String resultCode;
     /**
+     * 对于业务执行的详细描述
+     */
+    private String resultMsg;
+
+    /**
      * 错误代码 当result_code为FAIL时返回
      */
     private String errCode;

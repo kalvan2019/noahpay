@@ -20,6 +20,7 @@ public class WxPayConstants {
     public static final String REQUEST = "request";
 
     public static final String SUCCESS = "SUCCESS";
+    public static final String NOTPAY = "NOTPAY";
 
     public static final String OK = "OK";
 

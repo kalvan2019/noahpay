@@ -59,6 +59,14 @@ public class WxPayMicropayResponse extends WxPayResponse {
      */
     private String isSubscribe;
     /**
+     * 用户在子商户appid下的唯一标识
+     */
+    private String subOpenid;
+    /**
+     * 用户在子商户appid下的唯一标识
+     */
+    private String subIsSubscribe;
+    /**
      * 交易类型
      */
     private String tradeType;
