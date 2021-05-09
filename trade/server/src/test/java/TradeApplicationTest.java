@@ -10,10 +10,10 @@ import com.noahpay.pay.channel.wx.enums.WxPayConstants;
 import com.noahpay.pay.channel.wx.request.WxPayUnifiedOrder;
 import com.noahpay.pay.channel.wx.response.pay.WxPayUnifiedorderResponse;
 import com.noahpay.pay.commons.db.trade.mapper.PayBillMapper;
-import com.noahpay.pay.trade.bean.req.TransRequest;
+import com.noahpay.pay.trade.bean.req.OrderRequest;
 import com.noahpay.pay.trade.bean.res.TransResponse;
 import com.noahpay.pay.trade.constant.PayTypeEnum;
-import com.noahpay.pay.trade.iface.ITrans;
+import com.noahpay.pay.trade.iface.IPayTrans;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -34,18 +34,18 @@ import java.util.stream.Collectors;
 @SpringBootTest(classes = {TradeApplication.class})
 public class TradeApplicationTest {
 
-    private static TransRequest transRequest;
+    private static OrderRequest orderRequest;
     private static Response<TransResponse> transResponse;
     @Resource
     PayBillMapper payBillMapper;
     @Resource
-    ITrans iTrans;
+    IPayTrans iPayTrans;
 //    @Autowired
 //    private WxPay wxpay;
 
     @Test
     public void testValidate() {
-        TransRequest request = new TransRequest();
+        OrderRequest request = new OrderRequest();
         BeanValidationResult validate = ValidationUtil.warpValidate(request);
         if (!validate.isSuccess()) {
             throw new BizException(CommonReturnCode.PARAM_ILLEGAL.formatMessage(validate.getErrorMessages().stream().map(BeanValidationResult.ErrorMessage::getMessage).collect(Collectors.joining(","))));

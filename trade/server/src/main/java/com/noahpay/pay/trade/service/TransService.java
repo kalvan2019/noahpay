@@ -5,7 +5,7 @@ import com.kalvan.client.model.Response;
 import com.kalvan.web.util.DateUtil;
 import com.noahpay.pay.commons.db.trade.model.PayBill;
 import com.noahpay.pay.enums.mq.msg.TransNotify;
-import com.noahpay.pay.trade.bean.req.TransRequest;
+import com.noahpay.pay.trade.bean.req.OrderRequest;
 import com.noahpay.pay.trade.bean.res.TransResponse;
 import com.noahpay.pay.trade.constant.NotifyStateEnum;
 import com.noahpay.pay.trade.constant.PayTypeEnum;
@@ -57,7 +57,7 @@ public class TransService {
      * @param request 请求参数
      * @return 交易结果
      */
-    public Response order(TransRequest request) {
+    public Response order(OrderRequest request) {
         payBillCheck.checkParams(request);
         payBillCheck.checkRepeat(request);
         PayBill payBill = payBillInit.initBill(request);

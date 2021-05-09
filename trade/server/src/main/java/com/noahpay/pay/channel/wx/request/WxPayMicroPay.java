@@ -15,8 +15,4 @@ public class WxPayMicroPay extends WxPayUnifiedOrder {
      * （注：用户付款码条形码规则：18位纯数字，以10、11、12、13、14、15开头）
      */
     private String auth_code;
-
-    public WxPayMicroPay() {
-        super();
-    }
 }

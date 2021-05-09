@@ -9,7 +9,7 @@ import com.noahpay.pay.commons.db.trade.model.PayBill;
 import com.noahpay.pay.cust.bean.req.MerchantCheckTransRequest;
 import com.noahpay.pay.cust.bean.res.MerchantCheckTransResponse;
 import com.noahpay.pay.cust.controller.MerchantController;
-import com.noahpay.pay.trade.bean.req.TransRequest;
+import com.noahpay.pay.trade.bean.req.OrderRequest;
 import com.noahpay.pay.trade.constant.TransReturnCode;
 import com.noahpay.pay.trade.context.TradeContext;
 import com.noahpay.pay.trade.context.TradeContextHolder;
@@ -25,7 +25,7 @@ import javax.annotation.Resource;
  */
 @Component
 @Slf4j
-public class PayBillCheck extends BaseCheck<TransRequest, PayBill> {
+public class PayBillCheck extends BaseCheck<OrderRequest, PayBill> {
     /**
      * TODO 切換为微服务 IMerchant
      */
@@ -36,7 +36,7 @@ public class PayBillCheck extends BaseCheck<TransRequest, PayBill> {
 
 
     @Override
-    public void checkParams(TransRequest request) {
+    public void checkParams(OrderRequest request) {
         log.debug("参数检查");
         String orderDate = String.valueOf(request.getOrderDate());
         if (!DateUtil.getDateString().equals(orderDate)) {
@@ -45,7 +45,7 @@ public class PayBillCheck extends BaseCheck<TransRequest, PayBill> {
     }
 
     @Override
-    public void checkRepeat(TransRequest request) {
+    public void checkRepeat(OrderRequest request) {
         log.debug("订单查重");
         int count = payBillMapper.queryCountByOrderId(request.getMerchantNo(),
                 request.getOrderDate(), request.getOrderId());

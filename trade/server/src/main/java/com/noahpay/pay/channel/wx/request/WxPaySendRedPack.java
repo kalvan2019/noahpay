@@ -63,40 +63,4 @@ public class WxPaySendRedPack implements Serializable {
      * 活动信息
      */
     private String risk_info;
-
-    public WxPaySendRedPack() {
-        super();
-    }
-
-    public WxPaySendRedPack(String mch_billno, String send_name,
-                            String re_openid, String total_amount, String total_num,
-                            String wishing, String client_ip, String act_name, String remark) {
-        super();
-        this.mch_billno = mch_billno;
-        this.send_name = send_name;
-        this.re_openid = re_openid;
-        this.total_amount = total_amount;
-        this.total_num = total_num;
-        this.wishing = wishing;
-        this.client_ip = client_ip;
-        this.act_name = act_name;
-        this.remark = remark;
-    }
-
-    public WxPaySendRedPack(String mch_billno, String send_name,
-                            String re_openid, String total_amount, String total_num,
-                            String wishing, String client_ip, String act_name, String remark,
-                            String scene_id) {
-        super();
-        this.mch_billno = mch_billno;
-        this.send_name = send_name;
-        this.re_openid = re_openid;
-        this.total_amount = total_amount;
-        this.total_num = total_num;
-        this.wishing = wishing;
-        this.client_ip = client_ip;
-        this.act_name = act_name;
-        this.remark = remark;
-        this.scene_id = scene_id;
-    }
 }

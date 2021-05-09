@@ -61,38 +61,4 @@ public class WxPaySendMiniProgramHb implements Serializable {
      * PRODUCT_8:税务刮奖<br>
      */
     private String scene_id;
-
-    public WxPaySendMiniProgramHb() {
-        super();
-    }
-
-    public WxPaySendMiniProgramHb(String mch_billno, String send_name,
-                                  String re_openid, String total_amount, String total_num,
-                                  String wishing, String client_ip, String act_name, String remark) {
-        super();
-        this.mch_billno = mch_billno;
-        this.send_name = send_name;
-        this.re_openid = re_openid;
-        this.total_amount = total_amount;
-        this.total_num = total_num;
-        this.wishing = wishing;
-        this.act_name = act_name;
-        this.remark = remark;
-    }
-
-    public WxPaySendMiniProgramHb(String mch_billno, String send_name,
-                                  String re_openid, String total_amount, String total_num,
-                                  String wishing, String client_ip, String act_name, String remark,
-                                  String scene_id) {
-        super();
-        this.mch_billno = mch_billno;
-        this.send_name = send_name;
-        this.re_openid = re_openid;
-        this.total_amount = total_amount;
-        this.total_num = total_num;
-        this.wishing = wishing;
-        this.act_name = act_name;
-        this.remark = remark;
-        this.scene_id = scene_id;
-    }
 }

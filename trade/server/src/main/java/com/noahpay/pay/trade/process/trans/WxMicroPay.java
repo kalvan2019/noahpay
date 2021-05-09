@@ -5,19 +5,18 @@ import com.alibaba.fastjson.JSON;
 import com.kalvan.client.constant.CommonStateEnum;
 import com.kalvan.client.exception.BizException;
 import com.kalvan.client.model.Response;
-import com.kalvan.web.util.DateUtil;
 import com.noahpay.pay.channel.bean.res.ChannelTransResponse;
 import com.noahpay.pay.channel.constant.ChannelReturnCode;
 import com.noahpay.pay.channel.wx.WxClient;
 import com.noahpay.pay.channel.wx.WxRequest;
 import com.noahpay.pay.channel.wx.enums.WxPayConstants;
-import com.noahpay.pay.channel.wx.request.WxPayUnifiedOrder;
-import com.noahpay.pay.channel.wx.response.pay.WxPayUnifiedorderResponse;
+import com.noahpay.pay.channel.wx.model.ExtDataInfo;
+import com.noahpay.pay.channel.wx.request.WxPayMicroPay;
+import com.noahpay.pay.channel.wx.response.pay.WxPayMicropayResponse;
 import com.noahpay.pay.commons.db.trade.model.PayBill;
 import com.noahpay.pay.route.constant.ChannelExtParamKey;
 import com.noahpay.pay.route.service.ChannelService;
 import com.noahpay.pay.trade.bean.model.SceneInfo;
-import com.noahpay.pay.trade.constant.TransReturnCode;
 import com.noahpay.pay.trade.process.template.BaseChannelTrans;
 import com.noahpay.pay.trade.service.PayBillService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,9 @@ import javax.annotation.Resource;
  */
 @Component
 @Slf4j
-public class WxPay extends BaseChannelTrans<PayBill> {
+public class WxMicroPay extends BaseChannelTrans<PayBill> {
+    @Resource
+    WxPay wxPay;
     @Resource
     PayBillService payBillService;
     @Resource
@@ -39,9 +40,7 @@ public class WxPay extends BaseChannelTrans<PayBill> {
 
     @Override
     public void channelConvertParam(PayBill bill) {
-        bill.setChannelSendSn(bill.getTransId());
-        bill.setChannelSendTime(DateUtil.date());
-        payBillService.updateSendChannel(bill);
+        wxPay.channelConvertParam(bill);
     }
 
     @Override
@@ -59,8 +58,8 @@ public class WxPay extends BaseChannelTrans<PayBill> {
             throw new BizException(ChannelReturnCode.CODE_6001.formatMessage(ChannelExtParamKey.NOTIFY_URL.code));
         }
         notifyUrl = notifyUrl + "/" + bill.getChannelNo() + "/" + bill.getPayType();
-        //请求微信下单
-        WxPayUnifiedOrder unifiedOrder = new WxPayUnifiedOrder();
+        //请求微信支付
+        WxPayMicroPay unifiedOrder = new WxPayMicroPay();
         unifiedOrder.setBody(bill.getDescription());
 //        unifiedOrder.setDetail();
         unifiedOrder.setAttach(bill.getAttach());
@@ -75,51 +74,54 @@ public class WxPay extends BaseChannelTrans<PayBill> {
         if (bill.getTimeExpire() != null) {
             unifiedOrder.setTime_expire(DatePattern.PURE_DATETIME_FORMAT.format(bill.getTimeExpire()));
         }
-        unifiedOrder.setNotify_url(notifyUrl);
-        unifiedOrder.setTrade_type(bill.getPayType());
-//        unifiedOrder.setProduct_id();
-//        unifiedOrder.setOpenid();
-//        unifiedOrder.setSub_openid();
 //        unifiedOrder.setDevice_info();
-//        unifiedOrder.setReceipt();
 //        unifiedOrder.setSub_appid();
         unifiedOrder.setAppid(appId);
         unifiedOrder.setMch_id(bill.getChannelMerchantNo());
         unifiedOrder.setSub_mch_id(bill.getChannelSubMerchantNo());
+        //付款条码
+        unifiedOrder.setAuth_code(bill.getChannelCodeUrl());
         //发送请求
-        WxRequest wxRequest = new WxRequest(unifiedOrder, WxPayUnifiedorderResponse.class, WxPayConstants.UNIFIEDORDER_URL_SUFFIX).setKey(apiKey);
-        WxPayUnifiedorderResponse wxResponse = WxClient.execute(wxRequest);
-        if (wxResponse.isSuccess() && WxPayConstants.SUCCESS.equals(wxResponse.getResultCode())) {
-            bill.setChannelCodeUrl(wxResponse.getCodeUrl());
-            bill.setChannelPrepayId(wxResponse.getPrepayId());
-            bill.setChannelWebUrl(wxResponse.getMwebUrl());
-            bill.setPayResultCode(TransReturnCode.SUCCESS.getCode());
-            bill.setPayResultNote(TransReturnCode.SUCCESS.getMessage());
-            //预下单成功不更新数据库直接返回
-            return bill;
+        WxRequest wxRequest = new WxRequest(unifiedOrder, WxPayMicropayResponse.class, WxPayConstants.MICROPAY_URL_SUFFIX).setKey(apiKey);
+        WxPayMicropayResponse wxResponse = WxClient.execute(wxRequest);
+        if (wxResponse.isSuccess()) {
+            //通信成功
+            ChannelTransResponse channelResponse = new ChannelTransResponse();
+            channelResponse.setChannelNo(bill.getChannelNo());
+            channelResponse.setChannelSendSn(wxResponse.getOutTradeNo());
+            channelResponse.setChannelRecvSn(wxResponse.getTransactionId());
+            if (StringUtils.isNotBlank(wxResponse.getTotalFee())) {
+                channelResponse.setChannelRecvAmount(Long.parseLong(wxResponse.getTotalFee()));
+            }
+            ExtDataInfo extDataInfo = new ExtDataInfo();
+            extDataInfo.setOpenid(wxResponse.getOpenid());
+            extDataInfo.setIsSubscribe(wxResponse.getIsSubscribe());
+            channelResponse.setChannelRecvExt(JSON.toJSONString(extDataInfo));
+            Response response;
+            if (WxPayConstants.SUCCESS.equals(wxResponse.getResultCode())) {
+                //明确交易成功
+                response = Response.buildSuccess().setData(channelResponse);
+            } else {
+                //明确交易失败
+                response = Response.buildResult(wxResponse.getErrCode(), wxResponse.getErrCodeDes()).setData(channelResponse);
+            }
+            //更新支付结果
+            return payBillService.updateChannelResponse(bill, response);
         } else {
-            String channelResultCode = wxResponse.getErrCode();
-            if (StringUtils.isBlank(channelResultCode)) {
-                channelResultCode = wxResponse.getReturnCode();
+            // <xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[不识别的参数notify_url]]></return_msg></xml>
+            Response response = Response.buildResult(wxResponse.getReturnCode(), wxResponse.getReturnMsg());
+            if (StringUtils.isNoneBlank(wxResponse.getReturnCode(), wxResponse.getReturnMsg())) {
+                //当失败
+                response.setState(CommonStateEnum.FAIL.code);
+            } else {
+                response.setState(CommonStateEnum.OVERTIME.code);
             }
-            String channelResultNote = wxResponse.getErrCodeDes();
-            if (StringUtils.isBlank(channelResultNote)) {
-                channelResultNote = wxResponse.getReturnMsg();
-            }
-            //失败更新数据库
-            return payBillService.updateChannelResponse(bill, Response.buildResult(channelResultCode, channelResultNote));
+            return payBillService.updateChannelResponse(bill, response);
         }
     }
 
     @Override
     public PayBill channelQuery(PayBill bill) {
-
-
-        ChannelTransResponse channelResponse = new ChannelTransResponse();
-        Response response = Response.buildSuccess().setData(channelResponse);
-        if (CommonStateEnum.QUERY_FAIL.code == response.getState()) {
-            throw new BizException(response);
-        }
-        return payBillService.updateChannelResponse(bill, response);
+        return wxPay.channelQuery(bill);
     }
 }

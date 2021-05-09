@@ -28,11 +28,11 @@ public enum PayTypeEnum {
     /**
      * 类型
      */
-    public String code;
+    public final String code;
     /**
      * 使用场景
      */
-    public String desc;
+    public final String desc;
 
     PayTypeEnum(String code, String desc) {
         this.code = code;

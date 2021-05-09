@@ -19,6 +19,8 @@ public class ChannelTransFactory {
 
     @Resource
     WxPay wxPay;
+    @Resource
+    WxMicroPay wxMicroPay;
 
     /**
      * 获取通道支付交易处理器
@@ -33,14 +35,14 @@ public class ChannelTransFactory {
         if (PayTypeEnum.JSAPI.code.equals(payBill.getPayType())) {
             return wxPay;
         }
-        if (PayTypeEnum.MICROPAY.code.equals(payBill.getPayType())) {
-            return wxPay;
-        }
         if (PayTypeEnum.APP.code.equals(payBill.getPayType())) {
             return wxPay;
         }
         if (PayTypeEnum.MWEB.code.equals(payBill.getPayType())) {
             return wxPay;
+        }
+        if (PayTypeEnum.MICROPAY.code.equals(payBill.getPayType())) {
+            return wxMicroPay;
         }
         throw new BizException(TransReturnCode.REQUEST_SERVICE_NOT_SUPPORT.formatMessage(payBill.getPayType()));
     }

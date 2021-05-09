@@ -1,17 +1,14 @@
-package com.noahpay.pay.channel.bean.res;
+package com.noahpay.pay.trade.bean.req;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 调用通道接口返回参数对象
- *
  * @author chenliang
  */
-@Setter
 @Getter
-public class ChannelTransResponse implements java.io.Serializable {
-    private static final long serialVersionUID = 1L;
+@Setter
+public class CallBackRequest implements java.io.Serializable {
     /**
      * (必填) 核心统一设值
      */
@@ -38,15 +35,16 @@ public class ChannelTransResponse implements java.io.Serializable {
      */
     private String channelRecvExt;
     /**
-     * 通道预支付标识
+     * 交易状态
+     * @see com.kalvan.client.constant.CommonStateEnum
      */
-    private String channelPrepayId;
+    private int state;
     /**
-     * 通道二维码
+     * 渠道返回码
      */
-    private String channelCodeUrl;
+    private String code;
     /**
-     * 通道支付链接
+     * 渠道返回说明
      */
-    private String channelWebUrl;
+    private String message;
 }

@@ -32,26 +32,4 @@ public class WxPayQueryCouponsInfo implements Serializable {
      * 微信支付分配的终端设备号
      */
     private String device_info;
-
-    public WxPayQueryCouponsInfo() {
-        super();
-    }
-
-    public WxPayQueryCouponsInfo(String coupon_id, String openid,
-                                 String stock_id) {
-        super();
-        this.coupon_id = coupon_id;
-        this.openid = openid;
-        this.stock_id = stock_id;
-    }
-
-    public WxPayQueryCouponsInfo(String coupon_id, String openid,
-                                 String stock_id, String op_user_id, String device_info) {
-        super();
-        this.coupon_id = coupon_id;
-        this.openid = openid;
-        this.stock_id = stock_id;
-        this.op_user_id = op_user_id;
-        this.device_info = device_info;
-    }
 }

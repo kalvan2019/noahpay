@@ -20,7 +20,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class TransRequest implements java.io.Serializable {
+public class OrderRequest implements java.io.Serializable {
     /**
      * 接入merchantNo
      * 平台分配会关联对应的支付通道参数
@@ -56,22 +56,10 @@ public class TransRequest implements java.io.Serializable {
     @NotBlank(message = "通知地址不能为空")
     private String notifyUrl;
     /**
-     * 支付方式
-     *
-     * @see PayTypeEnum
-     */
-    @NotNull(message = "支付方式不能为空")
-    private String payType;
-    /**
      * 附加数据
      * 附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
      */
     private String attach;
-    /**
-     * 商品ID
-     * payType=WX_NATIVE时，此参数必传。此id为二维码中包含的商品ID，商户自行定义。
-     */
-    private String productId;
     /**
      * 交易起始时间
      * 订单生成时间，格式为yyyy-MM-dd HH:mm:ss
@@ -87,11 +75,6 @@ public class TransRequest implements java.io.Serializable {
      */
     @Valid
     private Amount amount;
-    /**
-     * 付款方信息
-     */
-    @Valid
-    private PayerInfo payerInfo;
     /**
      * 场景信息
      */

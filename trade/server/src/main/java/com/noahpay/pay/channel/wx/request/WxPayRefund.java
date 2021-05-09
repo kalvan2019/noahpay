@@ -35,7 +35,6 @@ public class WxPayRefund implements Serializable {
      * 退款原因，若商户传入，会在下发给用户的退款消息中体现退款原因
      */
     private String refund_desc;
-
     /**
      * 通知地址
      */

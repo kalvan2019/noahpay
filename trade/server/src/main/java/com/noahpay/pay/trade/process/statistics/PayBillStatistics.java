@@ -2,12 +2,12 @@ package com.noahpay.pay.trade.process.statistics;
 
 import com.kalvan.client.model.Request;
 import com.noahpay.pay.commons.db.trade.model.PayBill;
-import com.noahpay.pay.trade.process.template.BaseStatistics;
 import com.noahpay.pay.risk.bean.req.MerchantUseRequest;
-import com.noahpay.pay.risk.iface.IRiskDataHandle;
+import com.noahpay.pay.risk.controller.RiskDataHandleController;
 import com.noahpay.pay.route.bean.req.ChannelUseRequest;
-import com.noahpay.pay.route.iface.IRouteDataHandle;
+import com.noahpay.pay.route.controller.RouteDataHandleController;
 import com.noahpay.pay.trade.constant.TransStateEnum;
+import com.noahpay.pay.trade.process.template.BaseStatistics;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -23,11 +23,17 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @Slf4j
 public class PayBillStatistics extends BaseStatistics<PayBill> {
+    /**
+     * TODO 切換为微服务 IRiskDataHandle;
+     */
     @Resource
-    IRiskDataHandle iRiskDataHandle;
+    RiskDataHandleController iRiskDataHandle;
+    /**
+     * TODO 切換为微服务 IRouteDataHandle ;
+     */
+    @Resource
+    RouteDataHandleController iRouteDataHandle;
 
-    @Resource
-    IRouteDataHandle iRouteDataHandle;
     Long calcMerchantUseCurrentTime = System.currentTimeMillis();
     /**
      * 商户号、使用金额
@@ -55,7 +61,7 @@ public class PayBillStatistics extends BaseStatistics<PayBill> {
     public synchronized void successCount(PayBill bill) {
         log.debug("商户交易成功累计处理");
         try {
-            if (bill.getState() == TransStateEnum.SUCCESS_PROCESS.code) {
+            if (bill.getState() == TransStateEnum.SUCCESS_PROCESS.code || bill.getState() == TransStateEnum.SUCCESS.code) {
                 calcMerchantUse(bill);
                 calcChannelUse(bill);
             }

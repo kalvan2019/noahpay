@@ -65,24 +65,6 @@ public class WxPaySendGroupRedPack implements Serializable {
      */
     private String risk_info;
 
-    public WxPaySendGroupRedPack() {
-        super();
-    }
-
-    public WxPaySendGroupRedPack(String mch_billno, String send_name,
-                                 String re_openid, String total_amount, String total_num,
-                                 String wishing, String act_name, String remark) {
-        super();
-        this.mch_billno = mch_billno;
-        this.send_name = send_name;
-        this.re_openid = re_openid;
-        this.total_amount = total_amount;
-        this.total_num = total_num;
-        this.wishing = wishing;
-        this.act_name = act_name;
-        this.remark = remark;
-    }
-
     public void setAmt_type(String amt_type) {
         if (StringUtils.isEmpty(amt_type) || !"ALL_RAND".equals(amt_type)) {
             amt_type = "ALL_RAND";
